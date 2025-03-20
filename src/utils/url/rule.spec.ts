@@ -1,0 +1,21 @@
+import { test, describe, expect } from 'vitest'
+import { addSubdomain } from './rule'
+
+describe('addSubdomain', () => {
+  test.each([
+    {
+      url: 'http://localhost:1234',
+      subdomain: 'test',
+      expected: 'http://test.localhost:1234'
+    },
+    {
+      url: 'https://dulee.dev',
+      subdomain: 'test',
+      expected: 'https://test.dulee.dev'
+    },
+  ])('subdomain: $subdomain', ({ url, subdomain, expected }) => {
+    const result = addSubdomain(url, subdomain);
+
+    expect(result).toEqual(expected)
+  })
+})

@@ -17,9 +17,13 @@
     "outDir": "tmp",
     "noEmit": true,
     "paths": {
-      "~/*": ["./src/*"]
-    }
+      "~/*": ["./src/*"],
+      "@src/*": ["./src/*"],
+      "@__tests__/*": ["./__tests__/*"]
+    },
+    "typeRoots": ["types", "node_modules/@types"],
+    "types": ["node", "env.d.ts", "vitest.d.ts"]
   },
   "files": ["./.eslintrc.cjs"],
-  "include": ["src", "./*.d.ts", "./*.config.ts"]
+  "include": ["src", "./*.d.ts", "./*.config.ts", "__tests__"]
 }

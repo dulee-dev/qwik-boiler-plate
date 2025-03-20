@@ -1,13 +1,11 @@
-import { component$ } from "@builder.io/qwik";
-import {
-  QwikCityProvider,
-  RouterOutlet,
-  ServiceWorkerRegister,
-} from "@builder.io/qwik-city";
-import { RouterHead } from "./components/router-head/router-head";
-import { isDev } from "@builder.io/qwik";
-
-import "./global.css";
+import './i18n/i18n';
+import { component$ } from '@builder.io/qwik';
+import { QwikCityProvider } from '@builder.io/qwik-city';
+import './global.css';
+import { ServiceWorkerRegister } from '@builder.io/qwik-city';
+import { isDev } from '@builder.io/qwik';
+import { Body } from './components/meta/body';
+import { Head } from './components/meta/head';
 
 export default component$(() => {
   /**
@@ -19,20 +17,9 @@ export default component$(() => {
 
   return (
     <QwikCityProvider>
-      <head>
-        <meta charset="utf-8" />
-        {!isDev && (
-          <link
-            rel="manifest"
-            href={`${import.meta.env.BASE_URL}manifest.json`}
-          />
-        )}
-        <RouterHead />
-      </head>
-      <body lang="en">
-        <RouterOutlet />
-        {!isDev && <ServiceWorkerRegister />}
-      </body>
+      <Head />
+      <Body />
+      {!isDev && <ServiceWorkerRegister />}
     </QwikCityProvider>
   );
 });
