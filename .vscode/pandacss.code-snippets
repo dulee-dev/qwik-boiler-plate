@@ -1,0 +1,30 @@
+{
+  "init styles": {
+    "scope": "typescript",
+    "prefix": "!styles",
+    "description": "import panda css",
+    "body": [
+      "import { css } from '~/styled-system/css';",
+      "",
+      "export const s = {${0}",
+      "}",
+      "",
+    ],
+  },
+  "panda class": {
+    "scope": "typescriptreact, javascriptreact",
+    "prefix": "cs",
+    "description": "connect panda css object",
+    "body": [
+      "class={s${0}}",
+    ],
+  },
+  "create css object": {
+    "scope": "typescript",
+    "prefix": "ss",
+    "description": "write panda css object",
+    "body": [
+      "${1:className}: css({${0}}),",
+    ],
+  },
+}

@@ -1,0 +1,20 @@
+{
+  "waitlist": {
+    "meta": {
+      "title": "AI Assistant Waitlist",
+      "description": "Join the waitlist and enjoy unlimited access for 1 month."
+    },
+    "main": {
+      "title": "Waitlist Benefits",
+      "desc": "Be the first to experience the AI assistant!"
+    },
+    "benefit": {
+      "access": "Unlimited access for 1 month",
+      "notice": "Get notified as soon as we launch"
+    },
+    "form": {
+      "label": "Email",
+      "submit": "Join the Waitlist"
+    }
+  }
+}

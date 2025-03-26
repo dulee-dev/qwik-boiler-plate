@@ -1,0 +1,27 @@
+{
+  "home": {
+    "meta": {
+      "title": "Your First AI Assistant",
+      "description": "AI helps you plan and manage your schedule."
+    },
+    "hero": {
+      "title": "Your First AI Assistant",
+      "desc": "AI helps you plan and manage your schedule.",
+      "cta": "Join the waitlist"
+    },
+    "features": {
+      "autofill": "Effortless Schedule Creation",
+      "create": "Plan with AI, No More Guesswork",
+      "communication": "A Day Together",
+      "active": "Your Personal Assistant",
+      "analysis": "Proactive Insights & Suggestions"
+    },
+    "features-desc": {
+      "autofill": "Automatically fill in the details based on your title.",
+      "create": "Create schedules through a conversation with AI.",
+      "communication": "Messages that encourage your growth.",
+      "active": "From weather to departure times, get tailored reminders for your day.",
+      "analysis": "AI-powered analysis and suggestions based on big data."
+    }
+  }
+}

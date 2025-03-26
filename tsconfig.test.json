@@ -1,0 +1,7 @@
+{
+  "extends": "./tsconfig.json",
+  "exclude": ["**/*.stories.tsx", "**/*spec.ts", "sdk/resources"],
+  "compilerOptions": {
+    "noEmit": true
+  }
+}
