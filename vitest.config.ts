@@ -6,7 +6,11 @@ export default defineConfig((configEnv) =>
     viteConfig(configEnv),
     defineConfig({
       test: {
-        include: ['{src,__tests__}/**/*.{test,spec}.?(c|m)[jt]s?(x)'],
+        include: [
+          '{src,__tests__}/**/*.{test,spec}.?(c|m)[jt]s?(x)',
+          '{src,__tests__}/**/*.pure-{test,spec}.?(c|m)[jt]s?(x)',
+          '{src,__tests__}/**/*.effect-{test,spec}.?(c|m)[jt]s?(x)',
+        ],
         exclude: ['__tests__/**/*\\.e2e-spec\\.ts'],
         coverage: {
           provider: 'v8',

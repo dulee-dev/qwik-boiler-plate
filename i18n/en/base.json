@@ -1,0 +1,11 @@
+{
+  "base": {
+    "nav": {
+      "home": "home",
+      "some": "some"
+    },
+    "user": {
+      "sign-in": "sign-in"
+    }
+  }
+}

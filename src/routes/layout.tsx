@@ -1,5 +1,6 @@
 import {
   component$,
+  isDev,
   Slot,
   useContextProvider,
   useStore,
@@ -8,6 +9,8 @@ import {
 import type { RequestHandler } from '@builder.io/qwik-city';
 import { ConfigContext } from '../contexts/config';
 import { detectMobile } from '~/libs/env/detect-mobile';
+import { DevController } from '~/components/__dev__/dev-controller';
+import { DevControllerContext } from '~/contexts/dev-controller';
 
 export const onGet: RequestHandler = async ({ cacheControl }) => {
   // Control caching for this request for best performance and to reduce hosting costs:
@@ -22,6 +25,7 @@ export const onGet: RequestHandler = async ({ cacheControl }) => {
 
 export default component$(() => {
   const config = useStore({ isMobile: true });
+  const devController = useStore({ isNavOpened: true });
 
   useVisibleTask$(() => {
     const isMobile = detectMobile();
@@ -29,5 +33,11 @@ export default component$(() => {
   });
 
   useContextProvider(ConfigContext, config);
-  return <Slot />;
+  useContextProvider(DevControllerContext, devController);
+  return (
+    <>
+      <Slot />
+      {isDev && <DevController />}
+    </>
+  );
 });

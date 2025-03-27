@@ -6,6 +6,7 @@ import { Google } from './google';
 import { I18n } from './i18n';
 import { QwikBase } from './qwik-base';
 import { inlineTranslate } from 'qwik-speak';
+import { Fonts } from './fonts';
 
 export const Head = component$(() => {
   const head = useDocumentHead();
@@ -15,6 +16,7 @@ export const Head = component$(() => {
   return (
     <head>
       <meta charset="utf-8" />
+      <Fonts />
       <QwikPartytown forward={['gtag', 'dataLayer.push']} />
       <Google />
 
