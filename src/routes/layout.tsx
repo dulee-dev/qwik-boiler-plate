@@ -6,7 +6,7 @@ import {
   useVisibleTask$,
 } from '@builder.io/qwik';
 import type { RequestHandler } from '@builder.io/qwik-city';
-import { ConfigContext } from '../contexts/use-config';
+import { ConfigContext } from '../contexts/config';
 import { detectMobile } from '~/libs/env/detect-mobile';
 
 export const onGet: RequestHandler = async ({ cacheControl }) => {
@@ -22,6 +22,7 @@ export const onGet: RequestHandler = async ({ cacheControl }) => {
 
 export default component$(() => {
   const config = useStore({ isMobile: true });
+
   useVisibleTask$(() => {
     const isMobile = detectMobile();
     config.isMobile = isMobile;

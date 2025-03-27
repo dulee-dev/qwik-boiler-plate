@@ -18,6 +18,7 @@ export default component$(() => {
    */
 
   useQwikSpeak({ config, translationFn });
+
   return (
     <QwikCityProvider>
       <Head />

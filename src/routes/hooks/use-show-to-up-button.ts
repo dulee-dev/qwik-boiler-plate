@@ -1,5 +1,5 @@
 import { $, useContext, useOnDocument, useSignal } from '@builder.io/qwik';
-import { ConfigContext } from '~/contexts/use-config';
+import { ConfigContext } from '~/contexts/config';
 
 export const useShowToUpButton = () => {
   const show = useSignal(false);

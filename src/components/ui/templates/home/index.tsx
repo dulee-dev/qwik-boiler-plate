@@ -9,11 +9,11 @@ import { Footer } from '../../organisms/footer';
 import { FloatingBtn } from '../../atoms/floating-btn';
 import { inlineTranslate } from 'qwik-speak';
 import { ObserveredInCss } from '../../atoms/observered-in-css';
+import { builGaQuery } from '~/analysis/ga/ga';
 
 export interface HomeProps {
   autoFillImg: string;
   showToUpButton: boolean;
-  onClickToWaitlist$: QRL<() => any>;
   onClickToUpButton$: QRL<() => any>;
 }
 
@@ -28,12 +28,15 @@ export const Home = component$<HomeProps>((props) => {
           <h1 class={s.heroTitle}>{t('home.hero.title')}</h1>
           <div class={s.heroSubTitle}>{t('home.hero.desc')}</div>
         </div>
+        <a
+          class={s.heroCta}
+          href={`/waitlist?${builGaQuery({ campaign: 'cta', medium: 'hero-btn' })}`}
+        >
+          {t('home.hero.cta')}
+        </a>
         <a class={s.heroLink} href={'#feature-cards'}>
           <FaChevronDownSolid />
         </a>
-        <button class={s.heroCta} onClick$={props.onClickToWaitlist$}>
-          {t('home.hero.cta')}
-        </button>
       </header>
       <div class={s.cardBox}>
         <nav

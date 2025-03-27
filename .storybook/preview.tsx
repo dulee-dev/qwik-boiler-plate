@@ -1,6 +1,7 @@
-import { Parameters } from 'storybook-framework-qwik';
-
 import '../src/global.css';
+import { Decorator, Parameters } from 'storybook-framework-qwik';
+import { Component } from '@builder.io/qwik';
+import { QwikCityMockProvider } from '@builder.io/qwik-city';
 
 export const parameters: Parameters = {
   layout: 'fullscreen',
@@ -18,3 +19,10 @@ export const parameters: Parameters = {
     iframeHeight: '200px',
   },
 };
+const withWrapper: Decorator = (Story: Component) => (
+  <QwikCityMockProvider>
+    <Story />
+  </QwikCityMockProvider>
+);
+
+export const decorators: Decorator[] = [withWrapper];
