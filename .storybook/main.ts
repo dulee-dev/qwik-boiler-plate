@@ -1,4 +1,5 @@
 import { StorybookConfig } from 'storybook-framework-qwik';
+import { css } from '~/styled-system/css';
 
 const config: StorybookConfig = {
   addons: ['@storybook/addon-links', '@storybook/addon-essentials'],

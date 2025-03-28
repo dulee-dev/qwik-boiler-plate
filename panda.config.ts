@@ -34,19 +34,23 @@ export default defineConfig({
       colors: {
         primary: {
           base: {
-            value: {
-              base: '#2F80ED',
-            },
+            value: '#2F80ED',
           },
           deep: {
-            value: {
-              base: '#1C5DBE',
-            },
+            value: '#1C5DBE',
           },
           light: {
-            value: {
-              base: '#F0F6FF',
-            },
+            value: '#F0F6FF',
+          },
+        },
+        error: {
+          base: {
+            value: '{colors.red.600}',
+          },
+        },
+        ok: {
+          base: {
+            value: '{colors.green.600}',
           },
         },
       },

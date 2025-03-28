@@ -5,20 +5,20 @@ export const s = {
     display: 'flex',
     fd: 'column',
     ai: 'flex-end',
-    pos: 'fixed',
-    right: '3rem',
-    bottom: '3rem',
   }),
 
   button: css({
-    width: '3.5rem',
-    height: '3.5rem',
-    borderRadius: 'full',
-    bg: 'violet.700',
+    bg: 'zinc.500',
+    width: 'full',
+    color: 'white',
+  }),
+
+  nav: css({
+    width: 'full',
   }),
 
   navItem: css({
-    bg: 'violet.700',
+    bg: 'zinc.500',
     color: 'white',
     fontWeight: 'semibold',
     p: '0.5rem',

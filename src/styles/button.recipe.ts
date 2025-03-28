@@ -18,6 +18,7 @@ export const buttonRecipe = cva({
       primary: {
         color: 'white',
         bg: 'primary.base',
+        borderColor: 'primary.base',
       },
       secondary: {
         color: 'primary.base',
