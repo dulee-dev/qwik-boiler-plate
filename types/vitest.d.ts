@@ -1,5 +1,14 @@
 interface CustomMatchers<R = unknown> {
-  toBeFoo: () => R;
+  toBeNumber(): R;
+  toBeBoolean(): R;
+  toBeArray(): R;
+  toHaveCode(property: number): R;
+  toBeValidationErrorIn(property: string): R;
+  toBeValidationErrorInParam(): R;
+  toBeString(): R;
+  toBeSimilarDate(property: Date): R;
+  toBeUuid(): R;
+  toThrowUniqueConstraintError(key: string): R;
 }
 
 declare module 'vitest' {

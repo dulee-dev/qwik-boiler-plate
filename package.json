@@ -76,10 +76,13 @@
     "wrangler": "^3.0.0"
   },
   "dependencies": {
+    "@faker-js/faker": "^9.6.0",
     "app-root-path": "^3.1.0",
     "dotenv": "^16.4.7",
     "inquirer": "^12.5.0",
     "ky": "^1.7.5",
-    "radashi": "^12.4.0"
+    "query-string": "^9.1.1",
+    "radashi": "^12.4.0",
+    "typia": "^8.1.0"
   }
 }

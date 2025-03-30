@@ -1,8 +1,8 @@
 /// <reference types="vite/client" />
 
 interface ImportMetaEnv {
-  readonly PUBLIC_WEB_URL: string;
-  readonly PUBLIC_API_URL: string;
+  readonly PUBLIC_WEB_BASE_URL: string;
+  readonly PUBLIC_MAIN_BASE_URL: string;
   readonly PUBLIC_GTAG: string;
 
   readonly CF_ACCOUNT_EMAIL: string;
@@ -20,8 +20,8 @@ interface ImportMeta {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace NodeJS {
   export interface ProcessEnv {
-    readonly PUBLIC_WEB_URL: string;
-    readonly PUBLIC_API_URL: string;
+    readonly PUBLIC_WEB_BASE_URL: string;
+    readonly PUBLIC_MAIN_BASE_URL: string;
     readonly PUBLIC_GTAG: string;
 
     readonly CF_ACCOUNT_EMAIL: string;

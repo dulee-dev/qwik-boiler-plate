@@ -1,8 +1,6 @@
-import { component$ } from '@builder.io/qwik';
+import { component$, Signal } from '@builder.io/qwik';
 import { s } from './styles.css';
 import { InputText } from '../../atoms/input-text';
-import { FaCheckSolid, FaXSolid } from '@qwikest/icons/font-awesome';
-import { cx } from '~/styled-system/css';
 import { InputTextType } from '~/libs/html/type';
 import { InputInfo } from '../../atoms/input-info';
 
@@ -11,7 +9,7 @@ export interface InputTextVerboseProps {
   label: string;
   name: string;
   id: string;
-  value: string;
+  bindValue: Signal<string>;
   info?: {
     type: 'ok' | 'error' | 'desc';
     text: string;

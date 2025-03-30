@@ -1,9 +1,9 @@
-import { unitize } from '../colloquial/unitize.pure';
+import { SizesOption, SizesValue } from '~/infra/cloudflare/image.type';
 import { breakpoints } from '../ux/ux.constant';
-import { SizesOption, SizesValue } from './image.type';
+import { unitize } from '../speak/unitize.pure';
 
-export const calcMaxWidthMediaQuery = (maxWidth: number, value: string) => {
-  return `(max-width:${maxWidth}px)${value}`;
+export const calcMinWidthMediaQuery = (minWidth: number, value: string) => {
+  return `(min-width:${minWidth}px)${value}`;
 };
 
 export const calcSizes = (options: SizesOption) => {
@@ -12,10 +12,10 @@ export const calcSizes = (options: SizesOption) => {
   let sizes = '';
 
   for (const [key, value] of Object.entries(queries)) {
-    const maxWidth = +breakpoints[key as keyof typeof breakpoints];
-    const query = calcMaxWidthMediaQuery(
-      maxWidth,
-      unitize(value.value, value.unit),
+    const minWidth = +breakpoints[key as keyof typeof breakpoints];
+    const query = calcMinWidthMediaQuery(
+      minWidth,
+      unitize(value.value, value.unit)
     );
     sizes += query + ',';
   }

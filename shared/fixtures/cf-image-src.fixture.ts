@@ -1,4 +1,4 @@
-export const cfImages = [
+export const cfImageUrlFixtures = [
   'https://imagedelivery.net/sO38Ra7xK9C5jR-qJrdsOw/094f99f9-a233-46ee-cd6b-7fe92b190a00',
   'https://imagedelivery.net/sO38Ra7xK9C5jR-qJrdsOw/6113ba61-8d62-4e7a-6a80-07770e64cc00',
   'https://imagedelivery.net/sO38Ra7xK9C5jR-qJrdsOw/bc1f1889-1841-4574-bf48-2da2c048d300',

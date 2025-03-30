@@ -1,15 +1,14 @@
 import { test, describe, expect } from 'vitest';
-import { calcMaxWidthMediaQuery, calcSizes } from './image.pure';
-import { SizesOption } from './image.type';
-import { CF_IMG_URL } from '@dulee.dev/fixture/dist/others/cf-img-url.constant';
+import { calcMinWidthMediaQuery, calcSizes } from './image.pure';
+import { SizesOption } from '~/infra/cloudflare/image.type';
 
-test('calcMaxWidthMediaQuery', () => {
+test('calcMinWidthMediaQuery', () => {
   const maxWidth = 600;
   const value = '300px';
 
-  const result = calcMaxWidthMediaQuery(maxWidth, value);
+  const result = calcMinWidthMediaQuery(maxWidth, value);
 
-  expect(result).toMatchInlineSnapshot(`"(max-width:600px)300px"`);
+  expect(result).toMatchInlineSnapshot(`"(min-width:600px)300px"`);
 });
 
 describe('calcSizes', () => {
@@ -29,7 +28,7 @@ describe('calcSizes', () => {
 
   test('responsive grid', () => {
     const options: SizesOption = {
-      mobileLarge: {
+      base: {
         value: 100,
         unit: 'vw',
       },
@@ -37,20 +36,19 @@ describe('calcSizes', () => {
         value: 50,
         unit: 'vw',
       },
-      desktop: {
+      desktopSmall: {
         value: 33,
         unit: 'vw',
       },
-      base: {
+      desktop: {
         value: 25,
         unit: 'vw',
       },
     };
 
     const result = calcSizes(options);
-
     expect(result).toMatchInlineSnapshot(
-      `"(max-width:600px)100vw,(max-width:768px)50vw,(max-width:1280px)33vw,25vw"`,
+      `"(min-width:768px)50vw,(min-width:992px)33vw,(min-width:1280px)25vw,100vw"`
     );
   });
 
@@ -68,6 +66,6 @@ describe('calcSizes', () => {
 
     const result = calcSizes(options);
 
-    expect(result).toMatchInlineSnapshot(`"(max-width:768px)100vw,768px"`);
+    expect(result).toMatchInlineSnapshot(`"(min-width:768px)100vw,768px"`);
   });
 });

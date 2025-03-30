@@ -16,6 +16,16 @@ export default defineConfig((configEnv) =>
           provider: 'v8',
           exclude: ['__tests__/**/*\\.e2e-spec\\.ts'],
         },
+        setupFiles: [
+          '__tests__/exec/import-env.ts',
+          '__tests__/vitest/expect-extends.ts',
+        ],
+        poolOptions: {
+          threads: {
+            singleThread: true,
+          },
+        },
+        fileParallelism: false,
       },
     })
   )

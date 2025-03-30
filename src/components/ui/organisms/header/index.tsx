@@ -31,7 +31,7 @@ export const Header = component$<HeaderProps>((props) => {
               <a href={'/'}>{t('base.nav.home')}</a>
             </li>
             <li class={s.navItem}>
-              <a href={'/waitlist'}>{t('base.nav.some')}</a>
+              <a href={'/waitlist'}>{t('base.nav.waitlist')}</a>
             </li>
           </ul>
         </nav>

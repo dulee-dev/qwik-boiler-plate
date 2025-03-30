@@ -23,7 +23,7 @@ const config: PlaywrightTestConfig = {
   use: {
     actionTimeout: 0,
     trace: 'on-first-retry',
-    baseURL: process.env.PUBLIC_WEB_URL,
+    baseURL: process.env.PUBLIC_WEB_BASE_URL,
   },
   projects: [
     {

@@ -1,4 +1,4 @@
-import { component$ } from '@builder.io/qwik';
+import { component$, Signal } from '@builder.io/qwik';
 import { s } from './styles.css';
 import { InputText } from '../../atoms/input-text';
 import { InputTextType } from '~/libs/html/type';
@@ -7,6 +7,7 @@ export interface InputTextLabeledProps {
   class?: string;
   label: string;
   name: string;
+  bindValue: Signal<string>;
   id: string;
   value: string;
   type?: InputTextType;

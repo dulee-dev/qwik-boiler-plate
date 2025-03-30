@@ -1,4 +1,4 @@
-import { ResponseBody } from '~/libs/main/main.type';
+import { ResponseBody } from '../main/libs/main.type';
 import { UploadImageResponseData } from './image.type';
 
 export const imageApi = {

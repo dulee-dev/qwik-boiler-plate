@@ -2,7 +2,7 @@
   "base": {
     "nav": {
       "home": "home",
-      "some": "some"
+      "waitlist": "waitlist"
     },
     "user": {
       "sign-in": "sign-in"

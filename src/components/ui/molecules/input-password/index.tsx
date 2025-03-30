@@ -1,4 +1,4 @@
-import { component$ } from '@builder.io/qwik';
+import { component$, Signal } from '@builder.io/qwik';
 import { s } from './styles.css';
 import { InputText } from '../../atoms/input-text';
 import { pwPlaceholder } from '~/libs/html/constant';
@@ -9,8 +9,8 @@ export interface InputPasswordProps {
   class?: string;
   label: string;
 
-  pw: string;
-  pwConfirm: string;
+  pw: Signal<string>;
+  pwConfirm: Signal<string>;
   info?: {
     type: 'ok' | 'error' | 'desc';
     text: string;
@@ -31,7 +31,7 @@ export const InputPassword = component$<InputPasswordProps>((props) => {
         id={'pw'}
         name="pw"
         placeholder={pwPlaceholder}
-        value={pw}
+        bindValue={pw}
         type="password"
         autocomplete="new-password"
       />
@@ -40,7 +40,7 @@ export const InputPassword = component$<InputPasswordProps>((props) => {
         id={'pwConfirm'}
         name="pwConfirm"
         placeholder={pwPlaceholder}
-        value={pwConfirm}
+        bindValue={pwConfirm}
         type="password"
         autocomplete="new-password"
       />

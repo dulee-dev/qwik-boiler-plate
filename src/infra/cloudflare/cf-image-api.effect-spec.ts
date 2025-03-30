@@ -7,7 +7,7 @@ import appRoot from 'app-root-path';
 const IMAGE_FILE_PATH = path.join(
   appRoot.path,
   '__tests__/fixtures',
-  'tmall-logo.png'
+  '23f566b1-534d-418d-8003-be6813137cf6.jpg'
 );
 
 const convertImageFileToFormData = (

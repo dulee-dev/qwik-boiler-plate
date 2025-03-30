@@ -10,7 +10,7 @@ export const expect = baseExpect.extend({
     options?: { timeout?: number }
   ) {
     const assertionName = 'toHaveStrictUrl';
-    const baseUrl = process.env.PUBLIC_WEB_URL;
+    const baseUrl = process.env.PUBLIC_WEB_BASE_URL;
     const url = baseUrl + expected;
     let pass: boolean;
     let matcherResult: any;

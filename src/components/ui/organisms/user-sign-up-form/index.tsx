@@ -6,6 +6,8 @@ import { inlineTranslate } from 'qwik-speak';
 import { s } from './styles.css';
 import { buttonRecipe } from '~/styles/button.recipe';
 import { InputPassword } from '../../molecules/input-password';
+import { useInputText } from '~/hooks/use-input-text';
+import { useEmailInfo } from './hooks/use-email-info.hook';
 
 export interface UserSignUpFormProps {
   class?: string;
@@ -14,26 +16,33 @@ export interface UserSignUpFormProps {
 export const UserSignUpForm = component$<UserSignUpFormProps>((props) => {
   const t = inlineTranslate();
 
+  const email = useInputText('');
+  const pw = useInputText('');
+  const pwConfirm = useInputText('');
+
+  const emailInfo = useEmailInfo();
+
   return (
     <div class={cx(s.wrapper, props.class)}>
       <h1 class={s.title}>{t('users-sign-up.form.title@@회원가입')}</h1>
       <Form class={cx(props.class)}>
+        {email.value}
         <InputTextVerbose
           label="email"
           name="email"
           id="email"
-          value=""
           info={{
             type: 'ok',
             text: 'ok',
           }}
           type={'email'}
           placeholder="dulee@duleelab.com"
+          bindValue={email}
         />
         <InputPassword
           label="password"
-          pw=""
-          pwConfirm=""
+          pw={pw}
+          pwConfirm={pwConfirm}
           info={{
             type: 'error',
             text: 'error',

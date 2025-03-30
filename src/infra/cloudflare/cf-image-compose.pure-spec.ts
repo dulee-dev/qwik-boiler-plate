@@ -6,9 +6,9 @@ import {
   projectImageSrcset,
   projectNullableImageSrc,
 } from './cf-image-compose.pure';
-import { cfImages } from '@__tests__/fixtures/cf';
 import { SizesOption } from './image.type';
 import { calcSizes } from '~/libs/image/image.pure';
+import { cfImageUrlFixtures } from '@shared/fixtures/cf-image-src.fixture';
 
 describe('calcSrcsetBetween', () => {
   const src =
@@ -53,15 +53,15 @@ describe('projectImageSrc', () => {
   test.each([
     {
       describe: 'is cf image & no maxWidth',
-      src: cfImages[0],
+      src: cfImageUrlFixtures[0],
       maxWidth: undefined,
-      expected: cfImages[0] + '/w3200',
+      expected: cfImageUrlFixtures[0] + '/w3200',
     },
     {
       describe: 'is cf image & maxWidth',
-      src: cfImages[0],
+      src: cfImageUrlFixtures[0],
       maxWidth: 40,
-      expected: cfImages[0] + '/w128',
+      expected: cfImageUrlFixtures[0] + '/w128',
     },
     {
       describe: 'is not cf image',
@@ -80,28 +80,28 @@ describe('projectNullableImageSrc', () => {
     {
       describe: 'is null & no maxWidth',
       src: null,
-      placeholder: cfImages[1],
+      placeholder: cfImageUrlFixtures[1],
       maxWidth: undefined,
-      expected: cfImages[1] + '/w3200',
+      expected: cfImageUrlFixtures[1] + '/w3200',
     },
     {
       describe: 'is undefined & no maxWidth',
       src: undefined,
-      placeholder: cfImages[1],
+      placeholder: cfImageUrlFixtures[1],
       maxWidth: undefined,
-      expected: cfImages[1] + '/w3200',
+      expected: cfImageUrlFixtures[1] + '/w3200',
     },
     {
       describe: 'is cf image & maxWidth',
-      src: cfImages[0],
-      placeholder: cfImages[1],
+      src: cfImageUrlFixtures[0],
+      placeholder: cfImageUrlFixtures[1],
       maxWidth: 40,
-      expected: cfImages[0] + '/w128',
+      expected: cfImageUrlFixtures[0] + '/w128',
     },
     {
       describe: 'is not cf image',
       src: 'asdfasdfasdfdsf',
-      placeholder: cfImages[1],
+      placeholder: cfImageUrlFixtures[1],
       maxWidth: undefined,
       expected: 'asdfasdfasdfdsf',
     },
@@ -127,15 +127,18 @@ describe('projectImageSrcset', () => {
     },
     {
       describe: 'is cf Image & no range -> full srcset',
-      src: cfImages[0],
+      src: cfImageUrlFixtures[0],
       range: undefined,
-      expected: calcSrcsetBetween(cfImages[0]),
+      expected: calcSrcsetBetween(cfImageUrlFixtures[0]),
     },
     {
       describe: 'is cf Image & has range -> srcset between range',
-      src: cfImages[0],
+      src: cfImageUrlFixtures[0],
       range: { min: 128, max: 256 },
-      expected: calcSrcsetBetween(cfImages[0], { min: 128, max: 256 }),
+      expected: calcSrcsetBetween(cfImageUrlFixtures[0], {
+        min: 128,
+        max: 256,
+      }),
     },
   ])('$describe', ({ src, range, expected }) => {
     const result = projectImageSrcset(src, range);
@@ -174,7 +177,7 @@ describe('projectImageSizes', () => {
     },
     {
       describe: 'is cfImage -> undefined',
-      src: cfImages[0],
+      src: cfImageUrlFixtures[0],
       options: {
         base: {
           unit: 'vw',

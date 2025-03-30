@@ -20,7 +20,8 @@
       "~/*": ["./src/*"],
       "@src/*": ["./src/*"],
       "@__tests__/*": ["./__tests__/*"],
-      "@panda/*": ["./panda/*"]
+      "@panda/*": ["./panda/*"],
+      "@shared/*": ["./shared/*"]
     },
     "typeRoots": ["types", "node_modules/@types"],
     "types": ["node", "env.d.ts", "vitest.d.ts", "gtag.js"]
@@ -33,7 +34,8 @@
     "__tests__",
     "panda",
     "sdk",
-    "playground"
+    "playground",
+    "shared"
   ],
   "exclude": ["sdk/resources"]
 }
