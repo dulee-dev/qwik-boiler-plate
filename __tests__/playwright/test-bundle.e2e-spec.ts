@@ -1,6 +1,7 @@
 import { BaseHelper } from './base-helper';
 import { test, expect } from '@playwright/test';
 import { accessTokenFixtures } from '@shared/fixtures/access-token.fixture';
+import { userBotFixtures } from '@shared/fixtures/db/user.fixture';
 
 export const guardTest = {
   public(goto: string, url = /^http:\/\/localhost:5173\/console\/$/) {
@@ -46,11 +47,27 @@ export const guardTest = {
 
   all(goto: string, menu = true) {
     test(
+      `if not sign-in user, can access to open page` + menu
+        ? ' and "sign-in" link'
+        : '',
+      async ({ page }) => {
+        await page.goto(goto);
+
+        await expect(page).toHaveURL(goto);
+        if (menu)
+          await expect(
+            page.getByRole('link', { name: 'sign-in' })
+          ).toBeVisible();
+      }
+    );
+
+    test(
       `if sign-in user, can access to open page` + menu
-        ? ' and find user-dropdown-btn'
+        ? ' and find user.email'
         : '',
       async ({ page, context }) => {
         const accessToken = accessTokenFixtures[0];
+        const user = userBotFixtures[0];
 
         const helper = new BaseHelper(page, context);
         await helper.signInWithAccessToken(accessToken);
@@ -59,21 +76,8 @@ export const guardTest = {
 
         await expect(page).toHaveURL(goto);
         if (menu)
-          await expect(page.getByLabel('user-dropdown-menu-btn')).toBeVisible();
-      }
-    );
-
-    test(
-      `if not sign-in user, can access to open page` + menu
-        ? ' and "시작하기" link'
-        : '',
-      async ({ page }) => {
-        await page.goto(goto);
-
-        await expect(page).toHaveURL(goto);
-        if (menu)
           await expect(
-            page.getByRole('link', { name: '시작하기' })
+            page.getByRole('link', { name: user.email })
           ).toBeVisible();
       }
     );
