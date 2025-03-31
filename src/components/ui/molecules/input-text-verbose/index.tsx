@@ -1,7 +1,7 @@
 import { component$, Signal } from '@builder.io/qwik';
 import { s } from './styles.css';
 import { InputText } from '../../atoms/input-text';
-import { InputTextType } from '~/libs/html/type';
+import { InputInfoType, InputTextType } from '~/libs/html/type';
 import { InputInfo } from '../../atoms/input-info';
 
 export interface InputTextVerboseProps {
@@ -10,10 +10,7 @@ export interface InputTextVerboseProps {
   name: string;
   id: string;
   bindValue: Signal<string>;
-  info?: {
-    type: 'ok' | 'error' | 'desc';
-    text: string;
-  };
+  info?: InputInfoType;
   type?: InputTextType;
   placeholder?: string;
 }

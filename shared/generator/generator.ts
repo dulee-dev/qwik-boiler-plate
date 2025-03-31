@@ -7,10 +7,8 @@ import {
   SMALL_ALPHABET_SET,
   SPECIAL_SET,
 } from './constant';
-import { draw } from 'radashi';
-import { cfImageUrlFixtures } from '@shared/fixtures/cf-image-src.fixture';
-import { v4 } from 'uuid';
 import { User } from '@shared/domains/user/user.entity';
+import { v4 } from 'uuid';
 
 const charset = ['ko', 'en', 'EN', '123', '!@#', 'ㄱㄴㄷ'] as const;
 type Charset = (typeof charset)[number];
@@ -104,40 +102,18 @@ export const gen = {
     return string;
   },
 
-  email: faker.internet.email,
+  email: () => faker.internet.email().toLowerCase(),
 
   number: calcRandomNumber,
 
   int: calcRandomInteger,
 
   user: {
-    nickname: () =>
-      gen.string({
-        charset: ['ko', 'en', 'EN', '123'],
-        len: { max: 16, min: 2 },
-      }),
-
-    bio: () =>
-      gen.string({
-        len: { max: 20, min: 0 },
-      }),
-
-    introduction: () =>
-      gen.string({
-        len: { max: 2000, min: 0 },
-      }),
-
-    imgUrl: () => draw(cfImageUrlFixtures),
-
     pw: () => gen.string({ len: 8, charset: ['en', 'EN', '123'] }) + 'a1!',
 
     instance(given?: Partial<User>): User {
       const random: User = {
         email: gen.email(),
-        nickname: this.nickname(),
-        imgUrl: this.imgUrl(),
-        bio: this.bio(),
-        introduction: this.introduction(),
         id: v4(),
         createdAt: new Date(),
         updatedAt: null,

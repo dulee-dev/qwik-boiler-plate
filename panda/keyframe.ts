@@ -6,6 +6,11 @@ export const keyframes = defineKeyframes({
     '100%': { opacity: '1' },
   },
 
+  'fade-out': {
+    '0%': { opacity: '1' },
+    '100%': { opacity: '0' },
+  },
+
   'slide-down': {
     '0%': {
       transform: 'translateY(-4rem)',
@@ -26,7 +31,7 @@ export const keyframes = defineKeyframes({
 
   'slide-left': {
     '0%': {
-      transform: 'translateX(-1rem)',
+      transform: 'translateX(-4rem)',
     },
     '100%': {
       transform: 'translateX(0)',
@@ -35,10 +40,55 @@ export const keyframes = defineKeyframes({
 
   'slide-right': {
     '0%': {
-      transform: 'translateX(1rem)',
+      transform: 'translateX(4rem)',
     },
     '100%': {
       transform: 'translateX(0)',
+    },
+  },
+
+  'dismiss-down': {
+    '0%': {
+      transform: 'translateY(0)',
+    },
+    '100%': {
+      transform: 'translateY(4rem)',
+    },
+  },
+
+  'dismiss-top': {
+    '0%': {
+      transform: 'translateY(0)',
+    },
+    '100%': {
+      transform: 'translateY(-4rem)',
+    },
+  },
+
+  'dismiss-left': {
+    '0%': {
+      transform: 'translateX(0)',
+    },
+    '100%': {
+      transform: 'translateX(4rem)',
+    },
+  },
+
+  'dismiss-right': {
+    '0%': {
+      transform: 'translateX(0)',
+    },
+    '100%': {
+      transform: 'translateX(4rem)',
+    },
+  },
+
+  spin360: {
+    '0%': {
+      transform: 'rotate(0deg)',
+    },
+    '100%': {
+      transform: 'rotate(360deg)',
     },
   },
 

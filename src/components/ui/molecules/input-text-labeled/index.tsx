@@ -9,7 +9,6 @@ export interface InputTextLabeledProps {
   name: string;
   bindValue: Signal<string>;
   id: string;
-  value: string;
   type?: InputTextType;
   placeholder?: string;
 }

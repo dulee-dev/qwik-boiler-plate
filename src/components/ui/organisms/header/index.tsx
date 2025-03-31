@@ -6,17 +6,20 @@ import { pageX } from '~/styled-system/patterns';
 import { calcSrc } from '~/infra/cloudflare/cf-image-rule.pure';
 import { inlineTranslate } from 'qwik-speak';
 import { buttonRecipe } from '~/styles/button.recipe';
+import { useAuthUser } from '~/server/use-auth-user.loader';
 
 export interface HeaderProps {
   class?: string;
+  size?: 'base' | 'wide';
 }
 
 export const Header = component$<HeaderProps>((props) => {
   const t = inlineTranslate();
+  const authUser = useAuthUser();
 
   return (
     <div class={cx(s.wrapper, props.class)}>
-      <div class={cx(pageX(), s.container)}>
+      <div class={cx(pageX({ size: props.size }), s.container)}>
         <a href="/" class={s.logo}>
           <img
             src={calcSrc(logoUrl, 360)}
@@ -35,21 +38,39 @@ export const Header = component$<HeaderProps>((props) => {
             </li>
           </ul>
         </nav>
-        <div>
-          <a
-            class={cx(
-              buttonRecipe({
-                priority: 'secondary',
-                size: 'base',
-                rounded: 'full',
-              }),
-              s.signInBtn
-            )}
-            href={'/users/sign-in'}
-          >
-            {t('base.user.sign-in')}
-          </a>
-        </div>
+        {authUser.value === undefined ? (
+          <div>
+            <a
+              class={cx(
+                buttonRecipe({
+                  priority: 'secondary',
+                  size: 'base',
+                  rounded: 'full',
+                }),
+                s.signInBtn
+              )}
+              href={'/users/sign-in'}
+            >
+              {t('base.user.sign-in')}
+            </a>
+          </div>
+        ) : (
+          <div>
+            <a
+              class={cx(
+                buttonRecipe({
+                  priority: 'secondary',
+                  size: 'base',
+                  rounded: 'full',
+                }),
+                s.signInBtn
+              )}
+              href={'/console'}
+            >
+              {authUser.value.email}
+            </a>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -29,6 +29,7 @@
     "lint.fix": "eslint \"src/**/*.ts*\" --fix",
     "--------------------------- sdk ---------------------------": "",
     "sdk.add.cp": "tsx sdk/commands/create-components.ts",
+    "sdk.add.e2e": "tsx sdk/commands/create-e2e.ts",
     "--------------------------- etc ---------------------------": "",
     "build-storybook": "storybook build",
     "build.client": "vite build",
@@ -81,8 +82,10 @@
     "dotenv": "^16.4.7",
     "inquirer": "^12.5.0",
     "ky": "^1.7.5",
+    "posthog-js": "^1.234.1",
     "query-string": "^9.1.1",
     "radashi": "^12.4.0",
-    "typia": "^8.1.0"
+    "typia": "^8.1.0",
+    "uuid": "^11.1.0"
   }
 }

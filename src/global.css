@@ -13,10 +13,18 @@ button {
   cursor: pointer;
 }
 
+button:disabled {
+  cursor: not-allowed;
+}
+
 label {
   cursor: pointer;
 }
 
 input:focus {
   outline: none;
+}
+
+input:disabled {
+  cursor: not-allowed;
 }

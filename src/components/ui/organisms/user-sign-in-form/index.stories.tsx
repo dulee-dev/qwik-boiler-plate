@@ -15,5 +15,5 @@ type Story = StoryObj<UserSignInFormProps>;
 export default meta;
 
 export const Base: Story = {
-  render: (props: UserSignInFormProps) => <UserSignInForm {...props}>Some button</UserSignInForm>,
+  render: (props: UserSignInFormProps) => <UserSignInForm {...props} />,
 };

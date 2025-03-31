@@ -34,7 +34,7 @@ export const authGuard = {
     cookie: Cookie;
     sharedMap: SharedMap;
     redirect: Redirect;
-    redirectUrl: string;
+    redirectUrl?: string;
   }) {
     try {
       const response = await apiAuth(cookie, userMain.findMe);
@@ -45,7 +45,7 @@ export const authGuard = {
       sharedMap.set(USER_KEY, response.body.data.user);
       return;
     } catch {
-      throw redirect(302, redirectUrl);
+      throw redirect(302, redirectUrl ?? '/users/sign-in/?msg=unauthorized');
     }
   },
 
@@ -56,7 +56,7 @@ export const authGuard = {
   }: {
     cookie: Cookie;
     redirect: Redirect;
-    redirectUrl: string;
+    redirectUrl?: string;
   }) {
     try {
       const response = await apiAuth(cookie, userMain.findMe);
@@ -67,7 +67,7 @@ export const authGuard = {
 
       return;
     } catch (err) {
-      if (err === userAlreadySignInError) throw redirect(302, redirectUrl);
+      if (err === userAlreadySignInError) throw redirect(302, redirectUrl ?? '/console');
       return;
     }
   },

@@ -1,23 +1,19 @@
-import { $, component$ } from '@builder.io/qwik';
-import { type DocumentHead } from '@builder.io/qwik-city';
+import { component$ } from '@builder.io/qwik';
+import { RequestHandler, type DocumentHead } from '@builder.io/qwik-city';
 import { Home } from '~/components/ui/templates/home';
-import { useAutofillImage } from './hooks/use-autofill-image';
-import { useShowToUpButton } from './hooks/use-show-to-up-button';
+import { useSpeak } from 'qwik-speak';
+import { authGuard } from '~/server/auth/auth-guard.effect';
+import { useAuthUser } from '~/server/use-auth-user.loader';
+export { useAuthUser };
+
+export const onRequest: RequestHandler = async ({ cookie, sharedMap }) => {
+  await authGuard.all({ cookie, sharedMap });
+};
 
 export default component$(() => {
-  const autofillImage = useAutofillImage();
-  const show = useShowToUpButton();
-  const onClickToUpButton$ = $(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
+  useSpeak({ assets: ['home'] });
 
-  return (
-    <Home
-      autoFillImg={autofillImage.value}
-      showToUpButton={show.value}
-      onClickToUpButton$={onClickToUpButton$}
-    />
-  );
+  return <Home />;
 });
 
 export const head: DocumentHead = ({ resolveValue, params, head }) => {

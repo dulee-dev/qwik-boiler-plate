@@ -2,7 +2,7 @@ import { css } from '~/styled-system/css';
 
 export const s = {
   infoBox: css({
-    h: '1.5rem',
+    minH: '1.5rem',
   }),
 
   info: css({

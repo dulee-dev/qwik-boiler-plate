@@ -1,4 +1,4 @@
-import { component$, QRL } from '@builder.io/qwik';
+import { $, component$ } from '@builder.io/qwik';
 import { Header } from '@src/components/ui/organisms/header';
 import { s } from './styles.css';
 import { cx } from '~/styled-system/css';
@@ -10,15 +10,18 @@ import { FloatingBtn } from '../../atoms/floating-btn';
 import { inlineTranslate } from 'qwik-speak';
 import { ObserveredInCss } from '../../atoms/observered-in-css';
 import { builGaQuery } from '~/analysis/ga/ga';
+import { useShowToUpButton } from './hooks/use-show-to-up-button';
+import { useAutofillImage } from './hooks/use-autofill-image';
 
-export interface HomeProps {
-  autoFillImg: string;
-  showToUpButton: boolean;
-  onClickToUpButton$: QRL<() => any>;
-}
+export interface HomeProps {}
 
 export const Home = component$<HomeProps>((props) => {
   const t = inlineTranslate();
+  const showToUpButton = useShowToUpButton();
+  const onClickToUpButton$ = $(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+  const autoFillImage = useAutofillImage();
 
   return (
     <div class={s.wrapper}>
@@ -86,7 +89,7 @@ export const Home = component$<HomeProps>((props) => {
           threshhold={0.5}
         >
           <img
-            src={props.autoFillImg}
+            src={autoFillImage.value}
             class={s.autofillImg}
             alt="autofill"
             width={747}
@@ -201,9 +204,7 @@ export const Home = component$<HomeProps>((props) => {
           />
         </ObserveredInCss>
       </section>
-      {props.showToUpButton && (
-        <FloatingBtn onClick$={props.onClickToUpButton$} />
-      )}
+      {showToUpButton.value && <FloatingBtn onClick$={onClickToUpButton$} />}
       <Footer />
     </div>
   );

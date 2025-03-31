@@ -12,10 +12,6 @@ export default defineConfig((configEnv) =>
           '{src,__tests__}/**/*.effect-{test,spec}.?(c|m)[jt]s?(x)',
         ],
         exclude: ['__tests__/**/*\\.e2e-spec\\.ts'],
-        coverage: {
-          provider: 'v8',
-          exclude: ['__tests__/**/*\\.e2e-spec\\.ts'],
-        },
         setupFiles: [
           '__tests__/exec/import-env.ts',
           '__tests__/vitest/expect-extends.ts',

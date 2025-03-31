@@ -1,4 +1,4 @@
-import { DATE_ISO_REG_EXP } from '~/utils/regexp/regexp.pure';
+import { dateISORegExp } from '~/utils/regexp/regexp.pure';
 import queryString from 'query-string';
 
 type Body = {
@@ -52,7 +52,7 @@ const calcUrl = <T = Query>({
 
 const dateReviver = (key: string, value: any) => {
   if (typeof value === 'string') {
-    const isDate = DATE_ISO_REG_EXP.test(value);
+    const isDate = dateISORegExp.test(value);
     return isDate ? new Date(value) : value;
   }
   return value;

@@ -5,12 +5,13 @@ import { pageX } from '~/styled-system/patterns';
 
 export interface FooterProps {
   class?: string;
+  size?: 'base' | 'wide';
 }
 
 export const Footer = component$<FooterProps>((props) => {
   return (
     <div class={cx(s.wrapper, props.class)}>
-      <div class={cx(pageX({ type: 'padding' }), s.content)}>
+      <div class={cx(pageX({ type: 'padding', size: props.size }), s.content)}>
         <div>
           <h2 class={s.contactLabel}>contact</h2>
           <div>email: dulee.dev@gmail.com</div>

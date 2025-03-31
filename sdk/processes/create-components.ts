@@ -2,7 +2,7 @@ import { dash, last } from 'radashi';
 import { assertAllFilesExist } from '../tasks/assert-all-files-exist';
 import { forceHandleWriteFile } from '../tasks/force-handle-write-files';
 import { calcCapitalCamelCase } from '../libs/calc-capital-camel-case';
-import { logFileCreated } from '../actions/log-file-created';
+import { logComponentCreated } from '../actions/log-component-created';
 
 export const componentType = ['atom', 'molecule', 'organism', 'template'];
 
@@ -59,5 +59,5 @@ export const createComponents = async (
       },
     ]);
 
-  logFileCreated(files.length, { tsxPath, stylePath, storyPath }, dir);
+  logComponentCreated(files.length, { tsxPath, stylePath, storyPath }, dir);
 };

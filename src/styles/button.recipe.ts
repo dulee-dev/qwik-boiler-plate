@@ -8,6 +8,7 @@ export const buttonRecipe = cva({
     },
     size: {
       base: {
+        borderColor: 'transparent',
         borderWidth: '1px',
         fontWeight: 'semibold',
         py: '0.5rem',
@@ -18,11 +19,18 @@ export const buttonRecipe = cva({
       primary: {
         color: 'white',
         bg: 'primary.base',
-        borderColor: 'primary.base',
       },
       secondary: {
         color: 'primary.base',
         borderColor: 'primary.base',
+      },
+      disabled: {
+        color: 'gray.500',
+        bg: 'gray.300',
+      },
+      base: {
+        color: 'black',
+        borderColor: 'black',
       },
     },
   },

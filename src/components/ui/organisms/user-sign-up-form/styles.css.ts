@@ -15,9 +15,4 @@ export const s = {
       fontSize: '4xl',
     },
   }),
-
-  submit: css({
-    mt: '0.5rem',
-    w: 'full',
-  }),
 };

@@ -13,4 +13,8 @@ export const s = {
   pw: css({
     mb: '0.75rem',
   }),
+
+  info: css({
+    minH: '0rem',
+  }),
 };

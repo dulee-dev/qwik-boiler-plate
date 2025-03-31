@@ -1,0 +1,7 @@
+{
+  "dynamic": {
+    "info": {
+      "email": { "error": { "invalid": "올바른 이메일 양식을 입력해주세요." } }
+    }
+  }
+}

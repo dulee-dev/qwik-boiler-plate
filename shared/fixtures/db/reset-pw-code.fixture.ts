@@ -1,5 +1,5 @@
 import { ResetPwCode } from '@shared/domains/reset-pw-code/reset-pw-code.entity';
-import { userFixtures } from './user.fixture';
+import { userBotFixtures } from './user.fixture';
 
 /**
  * 0: long expired not used (will not use)
@@ -12,20 +12,20 @@ export const resetPwCodeFixtures: ResetPwCode[] = [
     createdAt: new Date(2024, 0, 1, 9),
     expiredAt: new Date(2099, 0, 1, 9),
     usedAt: null,
-    userId: userFixtures[0].id,
+    userId: userBotFixtures[0].id,
   },
   {
     id: 'aea700cd-6636-42f7-85e2-4d58072e1476',
     createdAt: new Date(2024, 5, 1, 0),
     expiredAt: new Date(2099, 0, 1, 1),
     usedAt: new Date(2024, 5, 1, 10),
-    userId: userFixtures[0].id,
+    userId: userBotFixtures[0].id,
   },
   {
     id: '885bd79a-850f-4264-a436-f78a64b59436',
     createdAt: new Date(2024, 5, 1, 0, 0),
     expiredAt: new Date(2024, 5, 1, 0, 30),
     usedAt: null,
-    userId: userFixtures[0].id,
+    userId: userBotFixtures[0].id,
   },
 ];

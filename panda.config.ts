@@ -48,6 +48,11 @@ export default defineConfig({
             value: '{colors.red.600}',
           },
         },
+        warn: {
+          base: {
+            value: '{colors.yellow.600}',
+          },
+        },
         ok: {
           base: {
             value: '{colors.green.600}',
@@ -91,15 +96,20 @@ export default defineConfig({
         description: 'page x layout',
         defaultValues: {
           type: 'padding',
+          size: 'base',
         },
         properties: {
           type: {
             type: 'enum',
             value: ['padding', 'margin'],
           },
+          size: {
+            type: 'enum',
+            value: ['base', 'wide'],
+          },
         },
         transform(props) {
-          const { type, ...rest } = props;
+          const { type, size, ...rest } = props;
           const x =
             type === 'padding'
               ? {
@@ -107,14 +117,15 @@ export default defineConfig({
                     base: '1rem',
                     mobile: '1.5rem',
                     tablet: '2rem',
-                    desktopSmall: 'auto',
+
+                    desktopSmall: size === 'base' ? 'auto' : '3rem',
                   },
                   mx: {
-                    desktopSmall: 'auto',
+                    desktopSmall: size === 'base' ? 'auto' : '3rem',
                   },
 
                   width: {
-                    desktopSmall: '60rem',
+                    desktopSmall: size === 'base' ? '60rem' : undefined,
                   },
                 }
               : {
@@ -122,10 +133,10 @@ export default defineConfig({
                     base: '1rem',
                     mobile: '1.5rem',
                     tablet: '2rem',
-                    desktopSmall: 'auto',
+                    desktopSmall: size === 'base' ? 'auto' : '3rem',
                   },
                   width: {
-                    desktopSmall: '60rem',
+                    desktopSmall: size === 'base' ? '60rem' : undefined,
                   },
                 };
           return {

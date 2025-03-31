@@ -1,0 +1,33 @@
+{
+  "dynamic": {
+    "info": {
+      "email": {
+        "error": {
+          "invalid": "Please enter a valid email address.",
+          "duplicated": "This email is already in use."
+        }
+      },
+      "pw": {
+        "error": {
+          "length": "Password must be 8-20 characters long.",
+          "invalid": "Include a letter, number, and symbol.",
+          "mismatch": "Passwords do not match."
+        }
+      },
+      "error": {
+        "server": "An error occurred while checking the email. Please try again later."
+      },
+      "ok": { "base": "success" }
+    },
+    "signUp": {
+      "success": "Welcome!"
+    },
+    "signIn": {
+      "fail": "Incorrect email or password.",
+      "success": "Welcome!"
+    },
+    "warn": {
+      "unauthorized": "Please log in to continue."
+    }
+  }
+}

@@ -1,6 +1,6 @@
 import chalk from 'chalk';
 
-export const logFileCreated = (
+export const logComponentCreated = (
   count: number,
   {
     tsxPath,

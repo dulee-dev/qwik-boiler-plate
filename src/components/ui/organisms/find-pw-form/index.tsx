@@ -27,7 +27,7 @@ export const FindPwForm = component$<FindPwFormProps>((props) => {
           value=""
           info={{
             type: 'ok',
-            text: 'ok',
+            tag: 'ok',
           }}
           type={'email'}
           placeholder="dulee@duleelab.com"

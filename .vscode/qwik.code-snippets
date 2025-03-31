@@ -26,6 +26,16 @@
       "});",
     ],
   },
+  "component": {
+    "scope": "javascriptreact,typescriptreact, typescript",
+    "prefix": "qcomponent$",
+    "description": "Simple Qwik component",
+    "body": [
+      "export const ${1:Name} = component$(() => {",
+      "  return <${2:div}>$1</$2>",
+      "});",
+    ],
+  },
   "Qwik signal": {
     "scope": "javascriptreact,typescriptreact, typescript",
     "prefix": "quseSignal",

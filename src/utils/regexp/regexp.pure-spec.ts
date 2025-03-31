@@ -3,8 +3,9 @@ import {
   pwRegExp,
   nicknameRegExp,
   emailRegExp,
-  DATE_ISO_REG_EXP,
-  UUID_REG_EXP,
+  dateISORegExp,
+  uuidRegExp,
+  emailInsensitiveRegExp,
 } from './regexp.pure';
 
 describe('pwRegExp (비밀번호)', () => {
@@ -34,6 +35,18 @@ describe('nicknameRegExp (닉네임)', () => {
   });
 });
 
+describe('emailInsensitiveRegExp (이메일)', () => {
+  test.each([
+    { text: 'tAAAAest@example.com', expected: true },
+    { text: 'user.name+tag@domain.co.kr', expected: true },
+    { text: 'invalid-email', expected: false },
+    { text: '@missinguser.com', expected: false },
+    { text: 'user@.nodomain', expected: false },
+  ])('$text → $expected', ({ text, expected }) => {
+    expect(emailInsensitiveRegExp.test(text)).toBe(expected);
+  });
+});
+
 describe('emailRegExp (이메일)', () => {
   test.each([
     { text: 'test@example.com', expected: true },
@@ -46,7 +59,7 @@ describe('emailRegExp (이메일)', () => {
   });
 });
 
-describe('DATE_ISO_REG_EXP (ISO 날짜)', () => {
+describe('dateISORegExp (ISO 날짜)', () => {
   test.each([
     { text: '2024-03-27T15:30:45.000Z', expected: true },
     { text: '2024-02-29T09:15:00.123Z', expected: true },
@@ -54,17 +67,17 @@ describe('DATE_ISO_REG_EXP (ISO 날짜)', () => {
     { text: 'invalid-date', expected: false },
     { text: '2024-13-01T00:00:00.000Z', expected: false },
   ])('$text → $expected', ({ text, expected }) => {
-    expect(DATE_ISO_REG_EXP.test(text)).toBe(expected);
+    expect(dateISORegExp.test(text)).toBe(expected);
   });
 });
 
-describe('UUID_REG_EXP (UUID v4)', () => {
+describe('uuidRegExp (UUID v4)', () => {
   test.each([
     { text: '123e4567-e89b-12d3-a456-426614174000', expected: true },
     { text: '123e4567-e89b-12d3-a456-42661417400z', expected: false },
     { text: 'not-a-uuid', expected: false },
     { text: '123e4567e89b12d3a456426614174000', expected: false },
   ])('$text → $expected', ({ text, expected }) => {
-    expect(UUID_REG_EXP.test(text)).toBe(expected);
+    expect(uuidRegExp.test(text)).toBe(expected);
   });
 });

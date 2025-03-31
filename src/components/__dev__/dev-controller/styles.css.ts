@@ -10,7 +10,7 @@ export const s = {
     bottom: '3rem',
   }),
 
-  button: css({
+  openButton: css({
     width: '3.5rem',
     height: '3.5rem',
     borderRadius: 'full',
@@ -25,5 +25,10 @@ export const s = {
     fontSize: 'sm',
     display: 'block',
     width: 'full',
+  }),
+
+  button: css({
+    bg: 'red.300',
+    w: 'full',
   }),
 };

@@ -1,5 +1,4 @@
 import { describe, test, expect } from 'vitest';
-import { v4 } from 'uuid';
 import { userMain } from './user-main.effect';
 import { userBotFixtures } from '@shared/fixtures/db/user.fixture';
 import { gen } from '@shared/generator/generator';
@@ -17,25 +16,18 @@ describe('userMain', () => {
   });
 
   describe('signUp', () => {
-    test('if invalid signUpCodeId, ', async () => {
-      const imgUrl = null;
-      const email = gen.email().toLocaleLowerCase();
-      const nickname = gen.user.nickname();
+    test('if ok, [201000]', async () => {
+      const email = gen.email();
       const pw = '123123aa!';
-      const bio = '';
-      const introduction = '';
-      const signUpCodeId = v4();
+      // const signUpCodeId = v4();
       const response = await userMain.signUp({
-        imgUrl,
         email,
-        nickname,
         pw,
-        bio,
-        introduction,
-        signUpCodeId,
+        // signUpCodeId,
       });
 
-      expect(response).toHaveCode(400000);
+      expect(response).toHaveCode(201000);
+      await reset();
     });
   });
 
@@ -59,21 +51,6 @@ describe('userMain', () => {
 
       const response = await userMain.findMe(accessToken);
       expect(response).toHaveCode(200000);
-    });
-  });
-
-  describe('updateMe', () => {
-    test('if ok, [200000]', async () => {
-      const accessToken = accessTokenFixtures[0];
-
-      const partial = {
-        nickname: gen.user.nickname(),
-      };
-
-      const response = await userMain.updateMe(accessToken, partial);
-      expect(response).toHaveCode(200000);
-
-      await reset();
     });
   });
 

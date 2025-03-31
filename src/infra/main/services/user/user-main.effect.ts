@@ -1,7 +1,6 @@
 import { User } from '@shared/domains/user/user.entity';
 import { api } from '../../libs/api';
 import { ResponseBody } from '../../libs/main.type';
-import { UserEditable } from '@shared/domains/user/types';
 
 export const userMain = {
   async findAllUsers({
@@ -29,49 +28,41 @@ export const userMain = {
   },
 
   async signUp({
-    imgUrl,
     email,
-    nickname,
     pw,
-    bio,
-    introduction,
-    signUpCodeId,
+    // signUpCodeId,
   }: {
-    imgUrl: string | null;
     email: string;
-    nickname: string;
     pw: string;
-    bio: string;
-    introduction: string;
-    signUpCodeId: string;
+    // signUpCodeId: string;
   }) {
     return api.post<
-      ResponseBody<
-        {
-          user: User;
-        },
-        201000
-      >
+      | ResponseBody<
+          {
+            user: User;
+          },
+          201000
+        >
+      | ResponseBody<void, 400001>
     >({
       relativePath: '/users',
       body: {
-        imgUrl,
         email,
-        nickname,
         pw,
-        bio,
-        introduction,
-        signUpCodeId,
+        // signUpCodeId,
       },
     });
   },
 
   async signIn({ email, pw }: { email: string; pw: string }) {
     return api.post<
-      ResponseBody<{
-        accessToken: string;
-        refreshToken: string;
-      }>
+      ResponseBody<
+        {
+          accessToken: string;
+          refreshToken: string;
+        },
+        201000
+      >
     >({
       relativePath: '/users/sign-in',
       body: {
@@ -91,20 +82,6 @@ export const userMain = {
       headers: {
         authorization: accessToken,
       },
-    });
-  },
-
-  async updateMe(accessToken: string, partial: UserEditable) {
-    return await api.patch<
-      ResponseBody<{
-        user: User;
-      }>
-    >({
-      relativePath: '/users/me',
-      headers: {
-        authorization: accessToken,
-      },
-      body: partial,
     });
   },
 

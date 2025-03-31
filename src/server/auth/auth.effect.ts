@@ -56,3 +56,14 @@ export const signIn = server$(async function ({
   refreshTokenHandler.setCookie(cookie, refreshToken);
   return;
 });
+
+export const signOut = server$(async function () {
+  const { cookie } = this;
+  const accessToken = accessTokenHandler.getCookie(cookie);
+  if (accessToken) {
+    await userMain.signOut(accessToken);
+  }
+
+  accessTokenHandler.deleteCookie(cookie);
+  refreshTokenHandler.deleteCookie(cookie);
+});

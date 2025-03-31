@@ -11,7 +11,7 @@ export const config: SpeakConfig = {
     { lang: 'en', currency: 'USD', timeZone: 'America/Los_Angeles' },
   ],
   // Translations available in the whole app
-  assets: ['base', 'home', 'waitlist'],
+  assets: ['base', 'waitlist'],
   // Translations with dynamic keys available in the whole app
-  runtimeAssets: ['runtime'],
+  runtimeAssets: ['dynamic'],
 };
