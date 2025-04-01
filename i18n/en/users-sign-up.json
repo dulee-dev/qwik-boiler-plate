@@ -6,7 +6,7 @@
     },
     "form": {
       "title": "Sign up",
-      "submit": "Sign up"
+      "submit": "Send Verification Email"
     }
   }
 }

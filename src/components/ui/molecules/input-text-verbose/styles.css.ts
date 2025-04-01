@@ -8,6 +8,10 @@ export const s = {
 
   input: css({
     w: 'full',
+
+    _disabled: {
+      bg: 'gray.200',
+    },
   }),
 
   infoBox: css({

@@ -1,19 +1,15 @@
-import { $, component$ } from '@builder.io/qwik';
-import { Form, useNavigate } from '@builder.io/qwik-city';
+import { $, component$, useContext } from '@builder.io/qwik';
+import { Form } from '@builder.io/qwik-city';
 import { cx } from '~/styled-system/css';
 import { InputTextVerbose } from '../../molecules/input-text-verbose';
 import { inlineTranslate } from 'qwik-speak';
 import { s } from './styles.css';
-import { InputPassword } from '../../molecules/input-password';
 import { useInputText } from '~/hooks/use-input-text';
 import { useEmailInfo } from './hooks/use-email-info.hook';
-import { usePwMatchInfo } from './hooks/use-pw-match-info.hook';
-import { usePwLengthInfo } from './hooks/use-pw-lenght-info.hook';
-import { usePwValidInfo } from './hooks/use-pw-valid-info.hook';
 import { useSubmitStatus } from './hooks/use-submit-status.hook';
-import { useSignUpAction } from '~/routes/users/sign-up';
+import { useCreateSignUpCodeAction } from '~/routes/users/sign-up';
 import { Submit } from '../../atoms/submit';
-import { signIn } from '~/server/auth/auth.effect';
+import { ToastListContext } from '~/contexts/toast-list';
 
 export interface UserSignUpFormProps {
   class?: string;
@@ -21,28 +17,40 @@ export interface UserSignUpFormProps {
 
 export const UserSignUpForm = component$<UserSignUpFormProps>((props) => {
   const t = inlineTranslate();
-  const nav = useNavigate();
+  const toastList = useContext(ToastListContext);
+  const action = useCreateSignUpCodeAction();
 
   const email = useInputText('');
-  const pw = useInputText('');
-  const pwConfirm = useInputText('');
-  const action = useSignUpAction();
 
   const emailInfo = useEmailInfo(email);
-  const pwInfo = usePwMatchInfo(pw, pwConfirm);
-  const pwLengthInfo = usePwLengthInfo(pw);
-  const pwValidInfo = usePwValidInfo(pw);
+
   const {
     submitStatus,
     onSubmit$,
     onSubmitCompleted$: onStatusSubmitCompleted$,
-  } = useSubmitStatus(emailInfo, pwInfo);
+  } = useSubmitStatus(emailInfo);
 
   const onSubmitCompleted$ = $(async () => {
     await onStatusSubmitCompleted$();
-    await signIn({ email: email.value, pw: pw.value });
+    const result = action.value;
 
-    nav('/console?msg=welcome');
+    if (result === undefined) {
+      toastList.addToast$({
+        type: 'error',
+        tag: 'dynamic.info.error.server',
+      });
+      return;
+    }
+
+    if (result.success === false) {
+      toastList.addToast$({
+        type: 'error',
+        tag: 'dynamic.signIn.fail',
+      });
+      return;
+    }
+
+    window.location.href = `/users/sign-up/check-email/?email=${email.value}/`;
   });
 
   return (
@@ -63,17 +71,8 @@ export const UserSignUpForm = component$<UserSignUpFormProps>((props) => {
           placeholder="dulee@duleelab.com"
           bindValue={email}
         />
-        <InputPassword
-          label="password"
-          pw={pw}
-          pwConfirm={pwConfirm}
-          infoMatch={pwInfo.value}
-          infoLength={pwLengthInfo.value}
-          infoValid={pwValidInfo.value}
-        />
         <Submit
           status={submitStatus.value}
-          // status={'loading'}
           label={t('usersSignUp.form.submit')}
         />
       </Form>

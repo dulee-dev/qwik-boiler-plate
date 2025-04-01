@@ -1,0 +1,13 @@
+{
+  "usersResetPw": {
+    "meta": {
+      "title": "Your First AI Assistant",
+      "description": "AI helps you plan and manage your schedule."
+    },
+    "form": {
+      "title": "Reset Your Password",
+      "desc": "Please enter your new password.",
+      "submit": "Set New Password"
+    }
+  }
+}

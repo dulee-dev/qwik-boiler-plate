@@ -1,6 +1,7 @@
 import { User } from '@shared/domains/user/user.entity';
 import { api } from '../../libs/api';
 import { ResponseBody } from '../../libs/main.type';
+import { UserInfo } from '@shared/domains/user-info/user-info.entity';
 
 export const userMain = {
   async findAllUsers({
@@ -30,26 +31,30 @@ export const userMain = {
   async signUp({
     email,
     pw,
-    // signUpCodeId,
+    signUpCodeId,
+    marketing,
   }: {
     email: string;
     pw: string;
-    // signUpCodeId: string;
+    signUpCodeId: string;
+    marketing: boolean;
   }) {
     return api.post<
       | ResponseBody<
           {
-            user: User;
+            user: User & { userInfo: UserInfo };
           },
           201000
         >
       | ResponseBody<void, 400001>
+      | ResponseBody<void, 400000>
     >({
       relativePath: '/users',
       body: {
         email,
         pw,
-        // signUpCodeId,
+        signUpCodeId,
+        marketing,
       },
     });
   },

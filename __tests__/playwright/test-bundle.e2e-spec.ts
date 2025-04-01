@@ -23,7 +23,10 @@ export const guardTest = {
     });
   },
 
-  private(goto: string, url = /^http:\/\/localhost:5173\/users\/sign-in\/?$/) {
+  private(
+    goto: string,
+    url = /^http:\/\/localhost:5173\/users\/sign-in\/\?msg=unauthorized\/?$/
+  ) {
     test(`if sign-in user, can access to private page`, async ({
       page,
       context,

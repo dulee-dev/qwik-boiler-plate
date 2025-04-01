@@ -1,5 +1,6 @@
 import { SignUpCode } from '@shared/domains/sign-up-code/sign-up-code.entity';
-import { ResponseBody } from '../../libs/main.type';
+import { ResponseBody, ResponseNotFound } from '../../libs/main.type';
+import { api } from '../../libs/api';
 
 export const signUpCodeMain = {
   async createOne(email: string) {
@@ -15,9 +16,12 @@ export const signUpCodeMain = {
       }
     );
     const statusCode = response.status;
-    const responseBody = (await response.json()) as ResponseBody<{
-      signUpCode: SignUpCode;
-    }>;
+    const responseBody = (await response.json()) as ResponseBody<
+      {
+        signUpCode: SignUpCode;
+      },
+      201000
+    >;
     return {
       body: responseBody,
       statusCode,
@@ -25,22 +29,15 @@ export const signUpCodeMain = {
   },
 
   async findOneById(id: string) {
-    const response = await fetch(
-      `${import.meta.env.PUBLIC_MAIN_BASE_URL}/sign-up-codes/${id}`,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        method: 'GET',
-      }
-    );
-    const statusCode = response.status;
-    const responseBody = (await response.json()) as ResponseBody<{
-      signUpCode: SignUpCode;
-    }>;
-    return {
-      body: responseBody,
-      statusCode,
-    };
+    return await api.get<
+      | ResponseBody<{
+          signUpCode: SignUpCode;
+        }>
+      | ResponseNotFound
+      | ResponseBody<void, 404001, 'expired'>
+    >({
+      relativePath: '/sign-up-codes',
+      additionalPath: `/${id}`,
+    });
   },
 };

@@ -8,6 +8,7 @@ import { reset } from '@__tests__/libs/teardown';
 import { ToastListContext } from '~/contexts/toast-list';
 import { signIn, signOut } from '~/server/auth/auth.effect';
 import { userHumanFixtures } from '@shared/fixtures/db/user.fixture';
+import { signUpCodeFixtures } from '@shared/fixtures/db/sign-up-code.fixture';
 
 export interface DevControllerProps {
   class?: string;
@@ -38,8 +39,16 @@ const links: (Link | SectionLink)[] = [
     initOpened: false,
     links: [
       {
-        tag: '회원가입',
+        tag: '회원가입(이메일 전송)',
         href: '/users/sign-up',
+      },
+      {
+        tag: '회원가입(이메일 전송 완료)',
+        href: '/users/sign-up/check-email/?email=q7y331xk@gmail.com',
+      },
+      {
+        tag: '회원가입(프로필)',
+        href: `/users/sign-up/profile/?code=${signUpCodeFixtures[0].id}`,
       },
       {
         tag: '로그인',
@@ -48,6 +57,10 @@ const links: (Link | SectionLink)[] = [
       {
         tag: '비밀번호 찾기',
         href: '/users/find-pw',
+      },
+      {
+        tag: '비밀번호 초기화',
+        href: '/users/reset-pw',
       },
       {
         tag: '비밀번호 초기화',
@@ -62,6 +75,18 @@ const links: (Link | SectionLink)[] = [
       {
         tag: '홈',
         href: '/console',
+      },
+      {
+        tag: '이미지',
+        href: '/console/image',
+      },
+      {
+        tag: '업로드 이미지',
+        href: '/console/upload-image',
+      },
+      {
+        tag: '파일',
+        href: '/console/file',
       },
     ],
   },

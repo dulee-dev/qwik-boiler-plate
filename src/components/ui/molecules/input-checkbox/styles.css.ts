@@ -4,7 +4,6 @@ export const s = {
   wrapper: css({
     dp: 'flex',
     ai: 'center',
-    fontSize: 'sm',
   }),
 
   input: css({

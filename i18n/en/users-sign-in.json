@@ -10,8 +10,8 @@
       "googleOAuth": "Sign in with google"
     },
     "links": {
-      "signUp": "Sign in",
-      "findPw": "Find Pw"
+      "signUp": "Sign up",
+      "findPw": "Forget Password?"
     }
   }
 }

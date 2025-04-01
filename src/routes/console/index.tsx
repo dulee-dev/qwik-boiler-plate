@@ -4,10 +4,11 @@ import {
   useLocation,
   type DocumentHead,
 } from '@builder.io/qwik-city';
+import { useSpeak } from 'qwik-speak';
 import { Console } from '~/components/ui/templates/console';
 import { ToastListContext } from '~/contexts/toast-list';
 import { authGuard } from '~/server/auth/auth-guard.effect';
-import { useAuthUser } from '~/server/use-auth-user.loader';
+import { useAuthUser } from '~/server/loader/use-auth-user.loader';
 export { useAuthUser };
 
 export const onRequest: RequestHandler = async ({
@@ -19,6 +20,7 @@ export const onRequest: RequestHandler = async ({
 };
 
 export default component$(() => {
+  useSpeak({ assets: ['console'] });
   const loc = useLocation();
   const toastList = useContext(ToastListContext);
 

@@ -6,8 +6,8 @@ export const s = {
     fd: 'column-reverse',
     ai: 'flex-start',
     pos: 'fixed',
-    bottom: '3rem',
-    left: '3rem',
+    bottom: '2rem',
+    left: '2rem',
     zIndex: '10',
 
     tablet: {
@@ -67,7 +67,11 @@ export const s = {
 
   toastBtn: css({
     fontSize: 'xs',
-    ml: '2rem',
+    ml: '0.5rem',
     color: 'gray.600',
+
+    tablet: {
+      ml: '2rem',
+    },
   }),
 };

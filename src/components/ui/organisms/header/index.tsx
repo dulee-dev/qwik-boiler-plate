@@ -6,7 +6,7 @@ import { pageX } from '~/styled-system/patterns';
 import { calcSrc } from '~/infra/cloudflare/cf-image-rule.pure';
 import { inlineTranslate } from 'qwik-speak';
 import { buttonRecipe } from '~/styles/button.recipe';
-import { useAuthUser } from '~/server/use-auth-user.loader';
+import { useAuthUser } from '~/server/loader/use-auth-user.loader';
 
 export interface HeaderProps {
   class?: string;

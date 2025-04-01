@@ -1,11 +1,17 @@
-import { component$ } from '@builder.io/qwik';
+import { $, component$, useContext } from '@builder.io/qwik';
 import { Form } from '@builder.io/qwik-city';
 import { cx } from '~/styled-system/css';
-import { InputTextVerbose } from '../../molecules/input-text-verbose';
 import { inlineTranslate } from 'qwik-speak';
 import { s } from './styles.css';
-import { buttonRecipe } from '~/styles/button.recipe';
 import { InputPassword } from '../../molecules/input-password';
+import { useInputText } from '~/hooks/use-input-text';
+import { usePwMatchInfo } from './hooks/use-pw-match-info.hook';
+import { usePwLengthInfo } from './hooks/use-pw-lenght-info.hook';
+import { usePwValidInfo } from './hooks/use-pw-valid-info.hook';
+import { Submit } from '../../atoms/submit';
+import { useSubmitStatus } from './hooks/use-submit-status.hook';
+import { useResetPwAction } from '~/routes/users/reset-pw';
+import { ToastListContext } from '~/contexts/toast-list';
 
 export interface ResetPwFormProps {
   class?: string;
@@ -13,27 +19,67 @@ export interface ResetPwFormProps {
 
 export const ResetPwForm = component$<ResetPwFormProps>((props) => {
   const t = inlineTranslate();
+  const toastList = useContext(ToastListContext);
+
+  const pw = useInputText('');
+  const pwConfirm = useInputText('');
+  const pwInfo = usePwMatchInfo(pw, pwConfirm);
+  const pwLengthInfo = usePwLengthInfo(pw);
+  const pwValidInfo = usePwValidInfo(pw);
+
+  const action = useResetPwAction();
+
+  const {
+    submitStatus,
+    onSubmit$,
+    onSubmitCompleted$: onSubmitCompletedStatus$,
+  } = useSubmitStatus(pwInfo);
+
+  const onSubmitCompleted$ = $(() => {
+    onSubmitCompletedStatus$();
+    const result = action.value;
+
+    if (result === undefined) {
+      toastList.addToast$({
+        type: 'error',
+        tag: 'dynamic.info.error.server',
+      });
+      return;
+    }
+
+    if (result.success === false) {
+      toastList.addToast$({
+        type: 'error',
+        tag: 'dynamic.resetPw.fail',
+      });
+      return;
+    }
+
+    window.location.href = '/users/sign-in/?msg=reset-pw';
+  });
 
   return (
     <div class={cx(s.wrapper, props.class)}>
-      <h1 class={s.title}>{t('users-reset-pw.form.title@@비밀번호 초기화')}</h1>
-      <div class={s.desc}>
-        {t('users-reset-pw.form.desc@@사용하실 비밀번호를 입력해주세요')}
-      </div>
-      <Form>
+      <h1 class={s.title}>{t('usersResetPw.form.title')}</h1>
+      <div class={s.desc}>{t('usersResetPw.form.desc')}</div>
+      <Form
+        action={action}
+        onSubmit$={onSubmit$}
+        onSubmitCompleted$={onSubmitCompleted$}
+      >
         <InputPassword
           label="new password"
-          pw=""
-          pwConfirm=""
-          info={{
-            type: 'error',
-            text: 'error',
-          }}
+          pw={pw}
+          pwConfirm={pwConfirm}
+          infoMatch={pwInfo.value}
+          infoLength={pwLengthInfo.value}
+          infoValid={pwValidInfo.value}
         />
 
-        <button class={cx(buttonRecipe({ priority: 'primary' }), s.submit)}>
-          {t('users-reset-pw.form.submit@@비밀번호 초기화')}
-        </button>
+        <Submit
+          status={submitStatus.value}
+          label={t('usersResetPw.form.submit')}
+        />
       </Form>
     </div>
   );

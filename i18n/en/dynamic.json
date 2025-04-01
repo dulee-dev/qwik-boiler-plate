@@ -15,7 +15,7 @@
         }
       },
       "error": {
-        "server": "An error occurred while checking the email. Please try again later."
+        "server": "Internal server error. Please try again later."
       },
       "ok": { "base": "success" }
     },
@@ -25,6 +25,17 @@
     "signIn": {
       "fail": "Incorrect email or password.",
       "success": "Welcome!"
+    },
+    "findPw": {
+      "fail": "We couldn`t find an account with that email."
+    },
+    "resetPw": {
+      "fail": "Invalid access.",
+      "success": "You can now sign in with your new password."
+    },
+    "signUpCode": {
+      "expired": "Your sign-up-code is expired.",
+      "invalid": "Your sign-up-code is invalid."
     },
     "warn": {
       "unauthorized": "Please log in to continue."

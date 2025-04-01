@@ -19,7 +19,8 @@ export const Submit = component$<SubmitProps>((props) => {
         buttonRecipe({
           priority: props.status === 'idle' ? 'primary' : 'disabled',
         }),
-        s.submit
+        s.submit,
+        props.class
       )}
       disabled={props.status !== 'idle'}
     >

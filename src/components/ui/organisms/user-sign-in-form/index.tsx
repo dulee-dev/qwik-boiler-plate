@@ -1,5 +1,5 @@
 import { $, component$, useContext, useSignal } from '@builder.io/qwik';
-import { Form, useNavigate } from '@builder.io/qwik-city';
+import { Form } from '@builder.io/qwik-city';
 import { cx } from '~/styled-system/css';
 import { InputTextVerbose } from '../../molecules/input-text-verbose';
 import { InputTextLabeled } from '../../molecules/input-text-labeled';
@@ -20,7 +20,6 @@ export interface UserSignInFormProps {
 export const UserSignInForm = component$<UserSignInFormProps>((props) => {
   const t = inlineTranslate();
   const toastList = useContext(ToastListContext);
-  const nav = useNavigate();
 
   const email = useSignal('');
   const pw = useSignal('');
@@ -54,7 +53,7 @@ export const UserSignInForm = component$<UserSignInFormProps>((props) => {
       return;
     }
 
-    nav('/console/?msg=welcome');
+    window.location.href = '/console/?msg=welcome';
   });
 
   return (

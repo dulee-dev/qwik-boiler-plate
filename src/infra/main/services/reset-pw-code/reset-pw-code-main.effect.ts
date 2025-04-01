@@ -23,9 +23,10 @@ export const resetPwCodeMain = {
     });
   },
 
-  async createOneByEmail(email: string) {
-    return await api.post<ResponseBody>({
+  async createOneByEmail(email: string, lang?: string) {
+    return await api.post<ResponseBody<void, 201000>>({
       relativePath: '/reset-pw-codes/create-by-email',
+      ...(lang ? { additionalPath: `?lang=${lang}` } : {}),
       body: { email },
     });
   },

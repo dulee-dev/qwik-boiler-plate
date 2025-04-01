@@ -19,6 +19,7 @@ export const InputCheckbox = component$<InputCheckboxProps>((props) => {
         type="checkbox"
         bind:checked={bindChecked}
         name={name}
+        value="marketing"
         id={id}
       />
       <label for={id}>{label}</label>

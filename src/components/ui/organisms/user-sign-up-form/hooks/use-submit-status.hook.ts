@@ -3,16 +3,14 @@ import { SubmitStatus } from '~/components/ui/atoms/submit';
 import { InputInfoType } from '~/libs/html/type';
 
 export const useSubmitStatus = (
-  emailInfo: Signal<InputInfoType | undefined>,
-  pwInfo: Signal<InputInfoType | undefined>
+  emailInfo: Signal<InputInfoType | undefined>
 ) => {
   const submitStatus = useSignal<SubmitStatus>('idle');
 
   useTask$(({ track }) => {
     const isEmailOk = track(() => emailInfo.value?.type) === 'ok';
-    const isPwOk = track(() => pwInfo.value?.type) === 'ok';
 
-    const isOk = isEmailOk && isPwOk;
+    const isOk = isEmailOk;
     submitStatus.value = isOk ? 'idle' : 'disable';
   });
 

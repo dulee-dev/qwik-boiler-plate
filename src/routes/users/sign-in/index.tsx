@@ -14,7 +14,7 @@ import {
   accessTokenHandler,
   refreshTokenHandler,
 } from '~/server/auth/auth.effect';
-import { useAuthUser } from '~/server/use-auth-user.loader';
+import { useAuthUser } from '~/server/loader/use-auth-user.loader';
 export { useAuthUser };
 
 export const onRequest: RequestHandler = async ({ cookie, redirect }) => {
@@ -62,6 +62,24 @@ export default component$(() => {
         type: 'warn',
         tag: 'dynamic.warn.unauthorized',
       });
+
+    if (msg === 'reset-pw')
+      toastList.addToast$({
+        type: 'ok',
+        tag: 'dynamic.resetPw.success',
+      });
+
+    if (msg === 'sign-up-code-expired')
+      toastList.addToast$({
+        type: 'warn',
+        tag: 'dynamic.signUpCode.expired',
+      });
+
+    if (msg === 'sign-up-code-invalid')
+      toastList.addToast$({
+        type: 'warn',
+        tag: 'dynamic.signUpCode.invalid',
+      });
   });
 
   return <SignIn />;
@@ -69,6 +87,6 @@ export default component$(() => {
 
 export const head: DocumentHead = ({ resolveValue, params, head }) => {
   return {
-    title: 'users-sign-in',
+    title: 'usersSignIn',
   };
 };

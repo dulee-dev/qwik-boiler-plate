@@ -4,6 +4,7 @@ import { userBotFixtures } from '@shared/fixtures/db/user.fixture';
 import { gen } from '@shared/generator/generator';
 import { accessTokenFixtures } from '@shared/fixtures/access-token.fixture';
 import { reset } from '@__tests__/libs/teardown';
+import { signUpCodeFixtures } from '@shared/fixtures/db/sign-up-code.fixture';
 
 describe('userMain', () => {
   describe('findAllUsers', () => {
@@ -17,13 +18,16 @@ describe('userMain', () => {
 
   describe('signUp', () => {
     test('if ok, [201000]', async () => {
-      const email = gen.email();
+      const signUpCode = signUpCodeFixtures[0];
+      const email = signUpCode.email;
       const pw = '123123aa!';
-      // const signUpCodeId = v4();
+      const signUpCodeId = signUpCode.id;
+      const marketing = true;
       const response = await userMain.signUp({
         email,
         pw,
-        // signUpCodeId,
+        signUpCodeId,
+        marketing,
       });
 
       expect(response).toHaveCode(201000);
