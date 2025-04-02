@@ -1,4 +1,3 @@
-// src/lib/posthog.ts
 declare global {
   interface Window {
     posthog: any;

@@ -12,6 +12,7 @@ import { useSignInAction } from '~/routes/users/sign-in';
 import { ToastListContext } from '~/contexts/toast-list';
 import { Submit } from '../../atoms/submit';
 import { useSubmitStatus } from './hooks/use-submit-status.hook';
+import { GoogleOauth } from '../../molecules/google-oauth';
 
 export interface UserSignInFormProps {
   class?: string;
@@ -90,6 +91,7 @@ export const UserSignInForm = component$<UserSignInFormProps>((props) => {
       >
         {t('usersSignIn.form.googleOAuth')}
       </button>
+      <GoogleOauth />
       <div class={s.links}>
         <a class={s.link} href="/users/sign-up">
           {t('usersSignIn.links.signUp')}
