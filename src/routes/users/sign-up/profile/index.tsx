@@ -4,13 +4,23 @@ import {
   routeAction$,
   type DocumentHead,
 } from '@builder.io/qwik-city';
+import { UserInfoProto } from '@shared/domains/user-info/user-info.type';
 import { useSpeak } from 'qwik-speak';
 import { SignUpProfile } from '~/components/ui/templates/sign-up-profile';
 import { userMain } from '~/infra/main/services/user/user-main.effect';
 import { authGuard } from '~/server/auth/auth-guard.effect';
 import { useAuthUser } from '~/server/loader/use-auth-user.loader';
+import { useCompanySize } from '~/server/loader/use-company-size.loader';
 import { useSignUpCode } from '~/server/loader/use-sign-up-code.loader';
-export { useAuthUser, useSignUpCode };
+import { useUserInfoGoal } from '~/server/loader/use-user-info-goal.loader';
+import { useUserInfoRole } from '~/server/loader/use-user-info-role.loader';
+export {
+  useAuthUser,
+  useSignUpCode,
+  useCompanySize,
+  useUserInfoRole,
+  useUserInfoGoal,
+};
 
 export const onRequest: RequestHandler = async ({ cookie, redirect }) => {
   await authGuard.public({ cookie, redirect });
@@ -18,7 +28,10 @@ export const onRequest: RequestHandler = async ({ cookie, redirect }) => {
 
 export const useSignUpAction = routeAction$(
   async (dataJson, { redirect, query }) => {
-    const data = dataJson as { email: string; pw: string; marketing: boolean };
+    const data = dataJson as { email: string; pw: string } & Omit<
+      UserInfoProto,
+      'userId'
+    >;
     const signUpCodeId = query.get('code');
 
     if (signUpCodeId === null) {

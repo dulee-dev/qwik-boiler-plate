@@ -18,6 +18,7 @@ export const s = {
 
   submit: css({
     mt: '1.5rem',
+    mb: '1rem',
     w: 'full',
   }),
 

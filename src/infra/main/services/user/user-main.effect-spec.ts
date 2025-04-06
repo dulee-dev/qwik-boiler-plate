@@ -5,6 +5,9 @@ import { gen } from '@shared/generator/generator';
 import { accessTokenFixtures } from '@shared/fixtures/access-token.fixture';
 import { reset } from '@__tests__/libs/teardown';
 import { signUpCodeFixtures } from '@shared/fixtures/db/sign-up-code.fixture';
+import { companySizeFixtures } from '@shared/fixtures/db/company-size.fixture';
+import { userInfoRoleFixtures } from '@shared/fixtures/db/user-info-role.fixture';
+import { userInfoGoalFixtures } from '@shared/fixtures/db/user-info-goal.fixture';
 
 describe('userMain', () => {
   describe('findAllUsers', () => {
@@ -22,12 +25,22 @@ describe('userMain', () => {
       const email = signUpCode.email;
       const pw = '123123aa!';
       const signUpCodeId = signUpCode.id;
-      const marketing = true;
+      const marketingApproval = true;
+      const companyName = 'companyName';
+      const companyUrl = 'companyUrl';
+      const companySizeId = companySizeFixtures[0].id;
+      const roleId = userInfoRoleFixtures[0].id;
+      const goalId = userInfoGoalFixtures[0].id;
       const response = await userMain.signUp({
         email,
         pw,
         signUpCodeId,
-        marketing,
+        marketingApproval,
+        companyName,
+        companyUrl,
+        companySizeId,
+        roleId,
+        goalId,
       });
 
       expect(response).toHaveCode(201000);

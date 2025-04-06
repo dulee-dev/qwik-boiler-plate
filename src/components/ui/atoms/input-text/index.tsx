@@ -12,6 +12,8 @@ export interface InputTextProps {
   placeholder?: string;
   autocomplete?: AutoFill;
   'aria-label'?: string;
+  maxLength?: number;
+  minLength?: number;
 }
 
 export const InputText = component$<InputTextProps>((props) => {

@@ -19,6 +19,7 @@ const config: PlaywrightTestConfig = {
   forbidOnly: !!process.env.CI,
   retries: 2,
   workers: 1,
+  maxFailures: 3,
   expect: {
     timeout: 15000,
   },

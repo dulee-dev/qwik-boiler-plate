@@ -6,8 +6,7 @@
     },
     "form": {
       "title": "Sign in",
-      "submit": "Sign in",
-      "googleOAuth": "Sign in with google"
+      "submit": "Sign in"
     },
     "links": {
       "signUp": "Sign up",

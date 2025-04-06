@@ -5,7 +5,6 @@ import { InputTextVerbose } from '../../molecules/input-text-verbose';
 import { InputTextLabeled } from '../../molecules/input-text-labeled';
 import { inlineTranslate } from 'qwik-speak';
 import { s } from './styles.css';
-import { buttonRecipe } from '~/styles/button.recipe';
 import { middleDot } from '~/utils/string';
 import { useEmailInfo } from './hooks/use-email-info';
 import { useSignInAction } from '~/routes/users/sign-in';
@@ -83,14 +82,12 @@ export const UserSignInForm = component$<UserSignInFormProps>((props) => {
           type={'password'}
           placeholder="********"
         />
-        <Submit label={t('usersSignIn.form.submit')} status={status.value} />
+        <Submit
+          class={s.submit}
+          label={t('usersSignIn.form.submit')}
+          status={status.value}
+        />
       </Form>
-      <button
-        class={cx(buttonRecipe({ priority: 'base' }), s.oauth)}
-        type="button"
-      >
-        {t('usersSignIn.form.googleOAuth')}
-      </button>
       <GoogleOauth />
       <div class={s.links}>
         <a class={s.link} href="/users/sign-up">

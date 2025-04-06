@@ -2,6 +2,7 @@ import { User } from '@shared/domains/user/user.entity';
 import { api } from '../../libs/api';
 import { ResponseBody } from '../../libs/main.type';
 import { UserInfo } from '@shared/domains/user-info/user-info.entity';
+import { UserInfoProto } from '@shared/domains/user-info/user-info.type';
 
 export const userMain = {
   async findAllUsers({
@@ -28,17 +29,13 @@ export const userMain = {
     });
   },
 
-  async signUp({
-    email,
-    pw,
-    signUpCodeId,
-    marketing,
-  }: {
-    email: string;
-    pw: string;
-    signUpCodeId: string;
-    marketing: boolean;
-  }) {
+  async signUp(
+    body: {
+      email: string;
+      pw: string;
+      signUpCodeId: string;
+    } & Omit<UserInfoProto, 'userId'>
+  ) {
     return api.post<
       | ResponseBody<
           {
@@ -46,16 +43,15 @@ export const userMain = {
           },
           201000
         >
-      | ResponseBody<void, 400001>
-      | ResponseBody<void, 400000>
+      | ResponseBody<void, 400000, 'invalid sign-up-code'>
+      | ResponseBody<void, 400001, 'sign-up-code is expired'>
+      | ResponseBody<void, 400002, 'email duplicated'>
+      | ResponseBody<void, 400003, 'company size not found'>
+      | ResponseBody<void, 400004, 'user-info-role not found'>
+      | ResponseBody<void, 400005, 'user-info-goal not found'>
     >({
       relativePath: '/users',
-      body: {
-        email,
-        pw,
-        signUpCodeId,
-        marketing,
-      },
+      body,
     });
   },
 

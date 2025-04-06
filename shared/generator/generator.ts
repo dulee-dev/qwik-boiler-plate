@@ -9,6 +9,8 @@ import {
 } from './constant';
 import { User } from '@shared/domains/user/user.entity';
 import { v4 } from 'uuid';
+import { draw } from 'radashi';
+import { UserInfo } from '@shared/domains/user-info/user-info.entity';
 
 const charset = ['ko', 'en', 'EN', '123', '!@#', 'ㄱㄴㄷ'] as const;
 type Charset = (typeof charset)[number];
@@ -61,6 +63,11 @@ const calcSet = (charset: Charset[]) => {
 };
 
 export const gen = {
+  boolean() {
+    const result = draw([true, false]);
+    return result;
+  },
+
   /**
    * charset: all, len: 1~10, linebreak: false, spacing: false
    */
@@ -104,12 +111,15 @@ export const gen = {
 
   email: () => faker.internet.email().toLowerCase(),
 
+  url: () => faker.internet.url().toLowerCase(),
+
   number: calcRandomNumber,
 
   int: calcRandomInteger,
 
   user: {
     pw: () => gen.string({ len: 8, charset: ['en', 'EN', '123'] }) + 'a1!',
+    provider: () => draw(['in-house', 'google']),
 
     instance(given?: Partial<User>): User {
       const random: User = {
@@ -118,12 +128,36 @@ export const gen = {
         createdAt: new Date(),
         updatedAt: null,
         deletedAt: null,
+        provider: this.provider(),
       };
 
       return {
         ...random,
         ...given,
       };
+    },
+  },
+
+  userInfo: {
+    instance: (given?: Partial<UserInfo>): UserInfo => {
+      const stdDate = new Date();
+      const userInfo: UserInfo = {
+        id: v4(),
+        createdAt: stdDate,
+        updatedAt: null,
+        deletedAt: null,
+        userId: v4(),
+        marketingApproval: false,
+        companyName: gen.string({ charset: ['en'] }),
+        companyUrl: 'https://duleelab.com',
+        companySizeId: v4(),
+        roleId: v4(),
+        goalId: v4(),
+
+        ...given,
+      };
+
+      return userInfo;
     },
   },
 };

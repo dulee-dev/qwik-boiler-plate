@@ -7,19 +7,20 @@ export interface InputCheckboxProps {
   label: string;
   name: string;
   id: string;
+  value: string;
   bindChecked: Signal<boolean>;
 }
 
 export const InputCheckbox = component$<InputCheckboxProps>((props) => {
-  const { class: className, label, name, id, bindChecked } = props;
+  const { class: className, label, name, id, bindChecked, value } = props;
   return (
     <div class={cx(s.wrapper, className)}>
       <input
         class={s.input}
         type="checkbox"
         bind:checked={bindChecked}
+        value={value}
         name={name}
-        value="marketing"
         id={id}
       />
       <label for={id}>{label}</label>

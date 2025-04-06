@@ -5,6 +5,8 @@ export class Helper extends BaseHelper {
   readonly getEmailInput: Locator;
   readonly getPwInput: Locator;
   readonly getPwConfirmInput: Locator;
+  readonly getCompanyName: Locator;
+  readonly getCompanyUrl: Locator;
   readonly getMarketingInput: Locator;
   readonly getSubmit: Locator;
 
@@ -13,6 +15,8 @@ export class Helper extends BaseHelper {
     this.getEmailInput = this.page.getByLabel('email', { exact: true });
     this.getPwInput = this.page.getByLabel('password', { exact: true });
     this.getPwConfirmInput = this.page.getByLabel('pwConfirm');
+    this.getCompanyName = this.page.getByLabel('company name');
+    this.getCompanyUrl = this.page.getByLabel('company url');
     this.getMarketingInput = this.page.getByLabel('promotional emails');
     this.getSubmit = this.page.getByRole('button', { name: 'Create Account' });
   }

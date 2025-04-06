@@ -14,6 +14,8 @@ export interface InputTextVerboseProps {
   type?: InputTextType;
   placeholder?: string;
   disabled?: boolean;
+  maxLength?: number;
+  minLength?: number;
 }
 
 export const InputTextVerbose = component$<InputTextVerboseProps>((props) => {

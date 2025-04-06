@@ -37,6 +37,22 @@
       "expired": "Your sign-up-code is expired.",
       "invalid": "Your sign-up-code is invalid."
     },
+    "userInfoRole": {
+      "solo_creator": "solo creator",
+      "founder": "founder",
+      "marketer": "marketer",
+      "developer": "developer",
+      "product_manager": "product manager",
+      "support": "support"
+    },
+    "userInfoGoal": {
+      "conversion": "conversion",
+      "support_automation": "support automation",
+      "faq": "faq",
+      "content_navigation": "content navigation",
+      "onboarding": "onboarding",
+      "lead_generation": "lead generation"
+    },
     "warn": {
       "unauthorized": "Please log in to continue."
     }

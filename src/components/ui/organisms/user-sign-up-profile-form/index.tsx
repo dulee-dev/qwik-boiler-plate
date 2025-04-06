@@ -14,6 +14,11 @@ import { Submit } from '../../atoms/submit';
 import { signIn } from '~/server/auth/auth.effect';
 import { useSignUpAction, useSignUpCode } from '~/routes/users/sign-up/profile';
 import { InputCheckbox } from '../../molecules/input-checkbox';
+import { useCompanySize } from '~/server/loader/use-company-size.loader';
+import { useUserInfoRole } from '~/server/loader/use-user-info-role.loader';
+import { useUserInfoGoal } from '~/server/loader/use-user-info-goal.loader';
+import { InputRadio } from '../../molecules/input-radio';
+import { projectCompanySizeLabel } from '~/domains/company-size/company-size.pure';
 
 export interface UserSignUpFormProps {
   class?: string;
@@ -24,11 +29,20 @@ export const UserSignUpProfileForm = component$<UserSignUpFormProps>(
     const t = inlineTranslate();
     const emailInCode = useSignUpCode();
     const action = useSignUpAction();
+    const companySizeLoaded = useCompanySize();
+    const userInfoRoleLoaded = useUserInfoRole();
+    const userInfoGoalLoaded = useUserInfoGoal();
 
     const email = useInputText(emailInCode.value.data || '');
     const pw = useInputText('');
     const pwConfirm = useInputText('');
-    const marketing = useSignal(false);
+    const companyName = useInputText('');
+    const companyUrl = useInputText('');
+    const companySize = useSignal<string | undefined>(undefined);
+    const userInfoRole = useSignal<string | undefined>(undefined);
+    const userInfoGoal = useSignal<string | undefined>(undefined);
+
+    const marketingApproval = useSignal(false);
 
     const pwInfo = usePwMatchInfo(pw, pwConfirm);
     const pwLengthInfo = usePwLengthInfo(pw);
@@ -37,14 +51,36 @@ export const UserSignUpProfileForm = component$<UserSignUpFormProps>(
       submitStatus,
       onSubmit$: onSubmitStatus$,
       onSubmitCompleted$: onStatusSubmitCompleted$,
-    } = useSubmitStatus(pwInfo);
+    } = useSubmitStatus(
+      pwInfo,
+      companyName,
+      companyUrl,
+      companySize,
+      userInfoRole,
+      userInfoGoal
+    );
 
     const onSubmit$ = $(async () => {
+      const companySizeId = companySizeLoaded.value.find(
+        (c) => c.tag === companySize.value
+      )?.id;
+      const roleId = userInfoRoleLoaded.value.find(
+        (c) => c.tag === userInfoRole.value
+      )?.id;
+      const goalId = userInfoGoalLoaded.value.find(
+        (c) => c.tag === userInfoGoal.value
+      )?.id;
+
       await onSubmitStatus$();
       await action.submit({
         email: email.value,
         pw: pw.value,
-        marketing: marketing.value,
+        marketingApproval: marketingApproval.value,
+        companyName: companyName.value,
+        companyUrl: companyUrl.value,
+        companySizeId,
+        roleId,
+        goalId,
       });
 
       await onStatusSubmitCompleted$();
@@ -75,12 +111,85 @@ export const UserSignUpProfileForm = component$<UserSignUpFormProps>(
             infoLength={pwLengthInfo.value}
             infoValid={pwValidInfo.value}
           />
+          <div class={s.info}>
+            <InputTextVerbose
+              label="company name"
+              name="companyName"
+              id="companyName"
+              info={undefined}
+              bindValue={companyName}
+              minLength={1}
+              maxLength={128}
+            />
+            <InputTextVerbose
+              label="company url"
+              name="companyUrl"
+              id="companyUrl"
+              info={undefined}
+              bindValue={companyUrl}
+              minLength={1}
+              maxLength={128}
+            />
+
+            <div class={s.radios}>
+              <div class={s.label}>company size</div>
+              <div>
+                {companySizeLoaded.value.map((c) => (
+                  <InputRadio
+                    class={s.radio}
+                    key={c.id}
+                    id={`companySize-${c.id}`}
+                    name="companySize"
+                    value={c.tag}
+                    label={projectCompanySizeLabel(c.tag)}
+                    bindValue={companySize}
+                  />
+                ))}
+              </div>
+            </div>
+
+            <div class={s.radios}>
+              <div class={s.label}>role</div>
+              <div>
+                {userInfoRoleLoaded.value.map((c) => (
+                  <InputRadio
+                    class={s.radio}
+                    key={c.id}
+                    id={`userInfoRole-${c.id}`}
+                    name="userInfoRole"
+                    value={c.tag}
+                    label={t(`dynamic.userInfoRole.${c.tag}`)}
+                    bindValue={userInfoRole}
+                  />
+                ))}
+              </div>
+            </div>
+
+            <div class={s.radios}>
+              <div class={s.label}>goal</div>
+              <div>
+                {userInfoGoalLoaded.value.map((c) => (
+                  <InputRadio
+                    class={s.radio}
+                    key={c.id}
+                    id={`userInfoGoal-${c.id}`}
+                    name="userInfoGoal"
+                    value={c.tag}
+                    label={t(`dynamic.userInfoGoal.${c.tag}`)}
+                    bindValue={userInfoGoal}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+
           <div class={s.approval}>
             <InputCheckbox
               label={t('usersSignUpProfile.form.marketing')}
               name="marketing"
               id="marketing"
-              bindChecked={marketing}
+              value="marketing"
+              bindChecked={marketingApproval}
             />
           </div>
           <Submit
