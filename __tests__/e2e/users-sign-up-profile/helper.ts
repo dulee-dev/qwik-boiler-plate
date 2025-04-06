@@ -7,6 +7,9 @@ export class Helper extends BaseHelper {
   readonly getPwConfirmInput: Locator;
   readonly getCompanyName: Locator;
   readonly getCompanyUrl: Locator;
+  readonly getCompanySizeFieldset: Locator;
+  readonly getRoleFieldset: Locator;
+  readonly getGoalFieldset: Locator;
   readonly getMarketingInput: Locator;
   readonly getSubmit: Locator;
 
@@ -17,6 +20,11 @@ export class Helper extends BaseHelper {
     this.getPwConfirmInput = this.page.getByLabel('pwConfirm');
     this.getCompanyName = this.page.getByLabel('company name');
     this.getCompanyUrl = this.page.getByLabel('company url');
+    this.getCompanySizeFieldset = this.page.locator(
+      'fieldset[name="companySize"]'
+    );
+    this.getRoleFieldset = this.page.locator('fieldset[name="userInfoRole"]');
+    this.getGoalFieldset = this.page.locator('fieldset[name="userInfoGoal"]');
     this.getMarketingInput = this.page.getByLabel('promotional emails');
     this.getSubmit = this.page.getByRole('button', { name: 'Create Account' });
   }

@@ -43,9 +43,44 @@ test.describe('users-sign-up', () => {
     await helper.getPwConfirmInput.fill(pw);
     await helper.getCompanyName.fill(companyName);
     await helper.getCompanyUrl.fill(companyUrl);
-    await page.getByLabel('2 ~ 10').click();
-    await page.getByLabel('founder').click();
-    await page.getByLabel('faq').click();
+    await helper.getCompanySizeFieldset.getByLabel('2 ~ 10').click();
+    await helper.getRoleFieldset.getByLabel('founder').click();
+    await helper.getGoalFieldset.getByLabel('faq').click();
+    await helper.getMarketingInput.click();
+
+    await helper.getSubmit.click();
+
+    await expect(page).toHaveURL('/console/?msg=welcome');
+
+    await resetPlaywright();
+  });
+
+  test('submit using others', async ({ page, context }) => {
+    const signUpCode = signUpCodeFixtures[0];
+    const pw = '123123aa!';
+    const companyName = gen.string({ charset: ['en'] });
+    const companyUrl = gen.string({ charset: ['en'] });
+    const userInfoRoleOther = gen.string({ charset: ['en'] });
+    const userInfoGoalOther = gen.string({ charset: ['en'] });
+
+    const helper = new Helper(page, context);
+    await helper.gotoTargetPage(signUpCode.id);
+    await expect(helper.getEmailInput).toHaveValue(signUpCode.email);
+    await helper.getPwInput.fill(pw);
+    await helper.getPwConfirmInput.fill(pw);
+    await helper.getCompanyName.fill(companyName);
+    await helper.getCompanyUrl.fill(companyUrl);
+    await helper.getCompanySizeFieldset
+      .getByLabel('1', { exact: true })
+      .click();
+    await helper.getRoleFieldset.getByLabel('others:', { exact: true }).click();
+    await helper.getRoleFieldset
+      .getByLabel('userInfoRole-others')
+      .fill(userInfoRoleOther);
+    await helper.getGoalFieldset.getByLabel('others:', { exact: true }).click();
+    await helper.getGoalFieldset
+      .getByLabel('userInfoGoal-others')
+      .fill(userInfoGoalOther);
     await helper.getMarketingInput.click();
 
     await helper.getSubmit.click();

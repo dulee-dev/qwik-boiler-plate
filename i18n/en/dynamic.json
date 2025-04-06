@@ -1,5 +1,8 @@
 {
   "dynamic": {
+    "error": {
+      "server": "Internal server error. Please try again later."
+    },
     "info": {
       "email": {
         "error": {

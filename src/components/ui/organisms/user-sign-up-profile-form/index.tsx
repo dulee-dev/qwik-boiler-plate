@@ -1,5 +1,5 @@
-import { $, component$, useSignal } from '@builder.io/qwik';
-import { Form } from '@builder.io/qwik-city';
+import { $, component$, useContext, useSignal } from '@builder.io/qwik';
+import { Form, server$ } from '@builder.io/qwik-city';
 import { cx } from '~/styled-system/css';
 import { InputTextVerbose } from '../../molecules/input-text-verbose';
 import { inlineTranslate } from 'qwik-speak';
@@ -19,6 +19,36 @@ import { useUserInfoRole } from '~/server/loader/use-user-info-role.loader';
 import { useUserInfoGoal } from '~/server/loader/use-user-info-goal.loader';
 import { InputRadio } from '../../molecules/input-radio';
 import { projectCompanySizeLabel } from '~/domains/company-size/company-size.pure';
+import { InputRadioOthers } from '../../molecules/input-radio-others';
+import { userInfoRoleMain } from '~/infra/main/services/user-info-role/user-info-role-main.effect';
+import { ToastListContext } from '~/contexts/toast-list';
+import { userInfoGoalMain } from '~/infra/main/services/user-info-goal/user-info-goal-main.effect';
+
+const createUserInfoRole = server$(async function (description: string) {
+  try {
+    const response = await userInfoRoleMain.createOne({ description });
+
+    if (response.body.code === 201000) {
+      return response.body.data.userInfoRole;
+    }
+    return undefined;
+  } catch (err) {
+    return undefined;
+  }
+});
+
+const createUserInfoGoal = server$(async function (description: string) {
+  try {
+    const response = await userInfoGoalMain.createOne({ description });
+
+    if (response.body.code === 201000) {
+      return response.body.data.userInfoGoal;
+    }
+    return undefined;
+  } catch (err) {
+    return undefined;
+  }
+});
 
 export interface UserSignUpFormProps {
   class?: string;
@@ -26,6 +56,7 @@ export interface UserSignUpFormProps {
 
 export const UserSignUpProfileForm = component$<UserSignUpFormProps>(
   (props) => {
+    const toastList = useContext(ToastListContext);
     const t = inlineTranslate();
     const emailInCode = useSignUpCode();
     const action = useSignUpAction();
@@ -40,7 +71,9 @@ export const UserSignUpProfileForm = component$<UserSignUpFormProps>(
     const companyUrl = useInputText('');
     const companySize = useSignal<string | undefined>(undefined);
     const userInfoRole = useSignal<string | undefined>(undefined);
+    const userInfoRoleOther = useSignal<string>('');
     const userInfoGoal = useSignal<string | undefined>(undefined);
+    const userInfoGoalOther = useSignal<string>('');
 
     const marketingApproval = useSignal(false);
 
@@ -61,17 +94,50 @@ export const UserSignUpProfileForm = component$<UserSignUpFormProps>(
     );
 
     const onSubmit$ = $(async () => {
+      // 여기는 무조건 있지만
       const companySizeId = companySizeLoaded.value.find(
         (c) => c.tag === companySize.value
       )?.id;
-      const roleId = userInfoRoleLoaded.value.find(
+
+      // 아래 두개는 없을 수 있음. 그러면 others인거고 추가로 생성해줘야함
+      let roleId = userInfoRoleLoaded.value.find(
         (c) => c.tag === userInfoRole.value
       )?.id;
-      const goalId = userInfoGoalLoaded.value.find(
+      if (roleId === undefined) {
+        const description = userInfoRoleOther.value;
+        const userInfoRoleCreated = await createUserInfoRole(description);
+        if (userInfoRoleCreated === undefined) {
+          toastList.addToast$({
+            type: 'error',
+            tag: 'dynamic.error.server',
+          });
+
+          return;
+        }
+
+        roleId = userInfoRoleCreated.id;
+      }
+
+      let goalId = userInfoGoalLoaded.value.find(
         (c) => c.tag === userInfoGoal.value
       )?.id;
+      if (goalId === undefined) {
+        const description = userInfoRoleOther.value;
+        const userInfoGoalCreated = await createUserInfoGoal(description);
+        if (userInfoGoalCreated === undefined) {
+          toastList.addToast$({
+            type: 'error',
+            tag: 'dynamic.error.server',
+          });
+
+          return;
+        }
+
+        goalId = userInfoGoalCreated.id;
+      }
 
       await onSubmitStatus$();
+
       await action.submit({
         email: email.value,
         pw: pw.value,
@@ -133,7 +199,7 @@ export const UserSignUpProfileForm = component$<UserSignUpFormProps>(
 
             <div class={s.radios}>
               <div class={s.label}>company size</div>
-              <div>
+              <fieldset name="companySize">
                 {companySizeLoaded.value.map((c) => (
                   <InputRadio
                     class={s.radio}
@@ -145,12 +211,12 @@ export const UserSignUpProfileForm = component$<UserSignUpFormProps>(
                     bindValue={companySize}
                   />
                 ))}
-              </div>
+              </fieldset>
             </div>
 
             <div class={s.radios}>
               <div class={s.label}>role</div>
-              <div>
+              <fieldset name="userInfoRole">
                 {userInfoRoleLoaded.value.map((c) => (
                   <InputRadio
                     class={s.radio}
@@ -162,12 +228,23 @@ export const UserSignUpProfileForm = component$<UserSignUpFormProps>(
                     bindValue={userInfoRole}
                   />
                 ))}
-              </div>
+                <InputRadioOthers
+                  class={s.radio}
+                  id={`userInfoRole-${'others'}`}
+                  radioName="userInfoRole"
+                  textLabel="userInfoRole-others"
+                  textName="userInfoRole-others"
+                  value={'others'}
+                  label={'others:'}
+                  bindRadio={userInfoRole}
+                  bindText={userInfoRoleOther}
+                />
+              </fieldset>
             </div>
 
             <div class={s.radios}>
               <div class={s.label}>goal</div>
-              <div>
+              <fieldset name="userInfoGoal">
                 {userInfoGoalLoaded.value.map((c) => (
                   <InputRadio
                     class={s.radio}
@@ -179,7 +256,18 @@ export const UserSignUpProfileForm = component$<UserSignUpFormProps>(
                     bindValue={userInfoGoal}
                   />
                 ))}
-              </div>
+                <InputRadioOthers
+                  class={s.radio}
+                  id={`userInfoGoal-${'others'}`}
+                  radioName="userInfoGoal"
+                  textLabel="userInfoGoal-others"
+                  textName="userInfoGoal-others"
+                  value={'others'}
+                  label={'others:'}
+                  bindRadio={userInfoGoal}
+                  bindText={userInfoGoalOther}
+                />
+              </fieldset>
             </div>
           </div>
 

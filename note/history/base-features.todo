@@ -1,12 +1,12 @@
-Task:
-  ☐ 전체 @est1h30m @started(25-04-06 10:31)
+base features:
+  ☐ 전체
   ☐ 요구사항 분석(문제 상황, 목표 등)
 
   ☐ 개발 전략(테스트 시나리오, 우선순위 - 후순위로 미룰게 있나?, 작업 목록 작성)
 
   ☐ 작업 목록: @must @could @should @won't
-    ☐ user-info-role의 others 처리
-    ☐ user-info-goal의 others 처리
+    ✔ toast @done(25-03-30 22:27)
+    ✔ auth @done(25-04-06 10:28)
 
   ☐ 회고
 
