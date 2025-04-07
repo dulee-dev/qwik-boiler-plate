@@ -1,12 +1,19 @@
 import { test, describe, expect } from 'vitest';
-import { googleOAuth } from './oauth-main.effect';
+import { googleOAuthMain } from './oauth-main.effect';
 import { gen } from '@shared/generator/generator';
 
-describe('googleOAuth', () => {
+describe('googleOAuthMain', () => {
   test('certify', async () => {
     const token = gen.string({ charset: ['en'], len: 30 });
-    const response = await googleOAuth.certify(token);
+    const response = await googleOAuthMain.certify(token);
 
-    expect(response).toHaveCode(400001);
+    expect(response).toHaveCode(401000);
+  });
+
+  test('verify', async () => {
+    const token = gen.string({ charset: ['en'], len: 30 });
+    const response = await googleOAuthMain.verify(token);
+
+    expect(response).toHaveCode(401000);
   });
 });

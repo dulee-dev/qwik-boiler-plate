@@ -22,3 +22,6 @@ export const extractSubdomain = (url: string): string | undefined => {
     return undefined; // 유효하지 않은 URL
   }
 };
+
+export const trimTailSlash = (url: string): string =>
+  url.endsWith('/') ? url.slice(0, -1) : url;

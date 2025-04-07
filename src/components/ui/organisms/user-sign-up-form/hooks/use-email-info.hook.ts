@@ -37,7 +37,7 @@ export const useEmailInfo = (email: Signal<string>) => {
         const isUnique = await checkIsUnique(_email);
 
         if (isUnique === undefined)
-          return { type: 'error', tag: 'dynamic.info.error.server' };
+          return { type: 'error', tag: 'dynamic.error.server' };
 
         if (isUnique === false)
           return { type: 'error', tag: 'dynamic.info.email.error.duplicated' };

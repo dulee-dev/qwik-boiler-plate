@@ -1,9 +1,13 @@
 {
   "dynamic": {
     "error": {
-      "server": "Internal server error. Please try again later."
+      "server": "Internal server error. Please try again later.",
+      "invalid": "invalid"
     },
     "info": {
+      "provider": {
+        "inHouse": "Log in with your email and password."
+      },
       "email": {
         "error": {
           "invalid": "Please enter a valid email address.",
@@ -16,9 +20,6 @@
           "invalid": "Include a letter, number, and symbol.",
           "mismatch": "Passwords do not match."
         }
-      },
-      "error": {
-        "server": "Internal server error. Please try again later."
       },
       "ok": { "base": "success" }
     },

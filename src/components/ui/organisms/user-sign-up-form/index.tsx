@@ -37,7 +37,7 @@ export const UserSignUpForm = component$<UserSignUpFormProps>((props) => {
     if (result === undefined) {
       toastList.addToast$({
         type: 'error',
-        tag: 'dynamic.info.error.server',
+        tag: 'dynamic.error.server',
       });
       return;
     }

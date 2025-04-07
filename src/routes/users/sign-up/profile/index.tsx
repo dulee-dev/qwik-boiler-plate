@@ -11,12 +11,12 @@ import { userMain } from '~/infra/main/services/user/user-main.effect';
 import { authGuard } from '~/server/auth/auth-guard.effect';
 import { useAuthUser } from '~/server/loader/use-auth-user.loader';
 import { useCompanySize } from '~/server/loader/use-company-size.loader';
-import { useSignUpCode } from '~/server/loader/use-sign-up-code.loader';
+import { useSignUpEmail } from '~/server/loader/use-sign-up-email.loader';
 import { useUserInfoGoal } from '~/server/loader/use-user-info-goal.loader';
 import { useUserInfoRole } from '~/server/loader/use-user-info-role.loader';
 export {
   useAuthUser,
-  useSignUpCode,
+  useSignUpEmail,
   useCompanySize,
   useUserInfoRole,
   useUserInfoGoal,
@@ -33,39 +33,43 @@ export const useSignUpAction = routeAction$(
       'userId'
     >;
     const signUpCodeId = query.get('code');
+    if (typeof signUpCodeId === 'string') {
+      const { email, ...rest } = data;
 
-    if (signUpCodeId === null) {
-      return { ok: false, msg: 'noSignUpCode' };
+      try {
+        const response = await userMain.signUp({
+          email: email.toLowerCase(),
+          ...rest,
+          signUpCodeId,
+        });
+
+        if (response.body.code === 400001) {
+          throw 1;
+        }
+        if (response.body.code === 400000) {
+          throw 2;
+        }
+        if (response.body.code === 201000) {
+          return { success: true };
+        }
+
+        return { success: false };
+      } catch (err) {
+        if (err === 1)
+          throw redirect(302, '/users/sign-in/?msg=sign-up-code-expired');
+        if (err === 2)
+          throw redirect(302, '/users/sign-in/?msg=sign-up-code-invalid');
+
+        return { success: false };
+      }
     }
 
-    const { email, ...rest } = data;
-
-    try {
-      const response = await userMain.signUp({
-        email: email.toLowerCase(),
-        ...rest,
-        signUpCodeId,
-      });
-
-      if (response.body.code === 400001) {
-        throw 1;
-      }
-      if (response.body.code === 400000) {
-        throw 2;
-      }
-      if (response.body.code === 201000) {
-        return { success: true };
-      }
-
-      return { success: false };
-    } catch (err) {
-      if (err === 1)
-        throw redirect(302, '/users/sign-in/?msg=sign-up-code-expired');
-      if (err === 2)
-        throw redirect(302, '/users/sign-in/?msg=sign-up-code-invalid');
-
-      return { success: false };
+    const googleIdToken = query.get('googleIdToken');
+    if (typeof googleIdToken === 'string') {
+      return { success: true, msg: 'tempt' };
     }
+
+    return { success: false, msg: 'noSignUpCode' };
   }
 );
 

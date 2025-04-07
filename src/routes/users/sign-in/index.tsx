@@ -80,6 +80,12 @@ export default component$(() => {
         type: 'warn',
         tag: 'dynamic.signUpCode.invalid',
       });
+
+    if (msg === 'invalid')
+      toastList.addToast$({
+        type: 'error',
+        tag: 'dynamic.error.invalid',
+      });
   });
 
   return <SignIn />;

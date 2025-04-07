@@ -1,5 +1,5 @@
 import { test, describe, expect } from 'vitest'
-import { addSubdomain, extractSubdomain } from './rule'
+import { addSubdomain, extractSubdomain, trimTailSlash } from './rule'
 
 describe('addSubdomain', () => {
   test.each([
@@ -40,3 +40,17 @@ describe('extractSubdomain', () => {
     expect(result).toEqual(expected)
   })
 })
+
+describe('trimTailSlash', () => {
+  test.each([
+    { url: 'https://example.com/', expected: 'https://example.com' },
+    { url: 'https://example.com//', expected: 'https://example.com/' },
+    { url: 'https://example.com/path/', expected: 'https://example.com/path' },
+    { url: 'https://example.com/path', expected: 'https://example.com/path' },
+    { url: '/', expected: '' },
+    { url: '', expected: '' },
+  ])('$url → $expected', ({ url, expected }) => {
+    const result = trimTailSlash(url);
+    expect(result).toEqual(expected);
+  });
+});

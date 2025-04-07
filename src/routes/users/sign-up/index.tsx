@@ -41,6 +41,6 @@ export default component$(() => {
 
 export const head: DocumentHead = ({ resolveValue, params, head }) => {
   return {
-    title: 'usersSignUpSuccess',
+    title: 'usersSignUp',
   };
 };

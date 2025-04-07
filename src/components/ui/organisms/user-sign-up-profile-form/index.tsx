@@ -12,7 +12,10 @@ import { usePwValidInfo } from './hooks/use-pw-valid-info.hook';
 import { useSubmitStatus } from './hooks/use-submit-status.hook';
 import { Submit } from '../../atoms/submit';
 import { signIn } from '~/server/auth/auth.effect';
-import { useSignUpAction, useSignUpCode } from '~/routes/users/sign-up/profile';
+import {
+  useSignUpAction,
+  useSignUpEmail,
+} from '~/routes/users/sign-up/profile';
 import { InputCheckbox } from '../../molecules/input-checkbox';
 import { useCompanySize } from '~/server/loader/use-company-size.loader';
 import { useUserInfoRole } from '~/server/loader/use-user-info-role.loader';
@@ -58,7 +61,7 @@ export const UserSignUpProfileForm = component$<UserSignUpFormProps>(
   (props) => {
     const toastList = useContext(ToastListContext);
     const t = inlineTranslate();
-    const emailInCode = useSignUpCode();
+    const emailInCode = useSignUpEmail();
     const action = useSignUpAction();
     const companySizeLoaded = useCompanySize();
     const userInfoRoleLoaded = useUserInfoRole();
