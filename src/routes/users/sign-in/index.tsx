@@ -81,6 +81,12 @@ export default component$(() => {
         tag: 'dynamic.signUpCode.invalid',
       });
 
+    if (msg === 'google-token-invalid')
+      toastList.addToast$({
+        type: 'warn',
+        tag: 'dynamic.googleToken.invalid',
+      });
+
     if (msg === 'invalid')
       toastList.addToast$({
         type: 'error',

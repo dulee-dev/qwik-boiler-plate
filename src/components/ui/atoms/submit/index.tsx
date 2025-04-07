@@ -1,4 +1,4 @@
-import { component$ } from '@builder.io/qwik';
+import { component$, QRL } from '@builder.io/qwik';
 import { cx } from '~/styled-system/css';
 import { buttonRecipe } from '~/styles/button.recipe';
 import { s } from './styles.css';
@@ -10,6 +10,8 @@ export interface SubmitProps {
   class?: string;
   status: SubmitStatus;
   label: string;
+  type?: 'submit' | 'button' | 'reset';
+  onClick$?: QRL<() => any>;
 }
 
 export const Submit = component$<SubmitProps>((props) => {
@@ -23,6 +25,8 @@ export const Submit = component$<SubmitProps>((props) => {
         props.class
       )}
       disabled={props.status !== 'idle'}
+      type={props.type ?? 'submit'}
+      onClick$={props.onClick$}
     >
       {props.status === 'loading' ? (
         <FaCircleNotchSolid class={s.loading} />

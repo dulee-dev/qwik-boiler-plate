@@ -7,7 +7,9 @@ import {
 import { UserInfoProto } from '@shared/domains/user-info/user-info.type';
 import { useSpeak } from 'qwik-speak';
 import { SignUpProfile } from '~/components/ui/templates/sign-up-profile';
+import { googleOAuthMain } from '~/infra/main/services/google/oauth-main.effect';
 import { userMain } from '~/infra/main/services/user/user-main.effect';
+import { trimTailSlash } from '~/libs/url/rule';
 import { authGuard } from '~/server/auth/auth-guard.effect';
 import { useAuthUser } from '~/server/loader/use-auth-user.loader';
 import { useCompanySize } from '~/server/loader/use-company-size.loader';
@@ -50,7 +52,7 @@ export const useSignUpAction = routeAction$(
           throw 2;
         }
         if (response.body.code === 201000) {
-          return { success: true };
+          return { success: true, provider: 'in-house' };
         }
 
         return { success: false };
@@ -66,10 +68,32 @@ export const useSignUpAction = routeAction$(
 
     const googleIdToken = query.get('googleIdToken');
     if (typeof googleIdToken === 'string') {
-      return { success: true, msg: 'tempt' };
+      const trimmed = trimTailSlash(googleIdToken);
+      const { email, pw, ...rest } = data;
+
+      try {
+        const response = await googleOAuthMain.signUp({
+          email: email.toLowerCase(),
+          ...rest,
+          idToken: trimmed,
+        });
+
+        if (response.body.code === 201000) {
+          return { success: true, provider: 'google' };
+        }
+
+        return { success: false };
+      } catch (err) {
+        if (err === 1)
+          throw redirect(302, '/users/sign-in/?msg=sign-up-code-expired');
+        if (err === 2)
+          throw redirect(302, '/users/sign-in/?msg=sign-up-code-invalid');
+
+        return { success: false };
+      }
     }
 
-    return { success: false, msg: 'noSignUpCode' };
+    return { success: false };
   }
 );
 

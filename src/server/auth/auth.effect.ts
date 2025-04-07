@@ -1,4 +1,5 @@
 import { server$, type Cookie } from '@builder.io/qwik-city';
+import { googleOAuthMain } from '~/infra/main/services/google/oauth-main.effect';
 import { userMain } from '~/infra/main/services/user/user-main.effect';
 const ACCESS_TOKEN_KEY = 'accessToken';
 const REFRESH_TOKEN_KEY = 'refreshToken';
@@ -55,6 +56,24 @@ export const signIn = server$(async function ({
   accessTokenHandler.setCookie(cookie, accessToken);
   refreshTokenHandler.setCookie(cookie, refreshToken);
   return;
+});
+
+export const googleAuth = server$(async function (token: string) {
+  const { cookie } = this;
+
+  const response = await googleOAuthMain.certify(token);
+  
+  if (response.body.code === 201000) {
+    if ('accessToken' in response.body.data) {
+      const { accessToken, refreshToken } = response.body.data;
+
+      accessTokenHandler.setCookie(cookie, accessToken);
+      refreshTokenHandler.setCookie(cookie, refreshToken);
+      return { message: 'sign-in' };
+    }
+    return { message: `provider=${response.body.data.provider}` };
+  }
+  return { message: 'fail' };
 });
 
 export const signOut = server$(async function () {

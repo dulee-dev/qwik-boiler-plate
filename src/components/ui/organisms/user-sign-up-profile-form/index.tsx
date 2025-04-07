@@ -1,5 +1,11 @@
-import { $, component$, useContext, useSignal } from '@builder.io/qwik';
-import { Form, server$ } from '@builder.io/qwik-city';
+import {
+  $,
+  component$,
+  useComputed$,
+  useContext,
+  useSignal,
+} from '@builder.io/qwik';
+import { Form, server$, useLocation } from '@builder.io/qwik-city';
 import { cx } from '~/styled-system/css';
 import { InputTextVerbose } from '../../molecules/input-text-verbose';
 import { inlineTranslate } from 'qwik-speak';
@@ -11,11 +17,8 @@ import { usePwLengthInfo } from './hooks/use-pw-lenght-info.hook';
 import { usePwValidInfo } from './hooks/use-pw-valid-info.hook';
 import { useSubmitStatus } from './hooks/use-submit-status.hook';
 import { Submit } from '../../atoms/submit';
-import { signIn } from '~/server/auth/auth.effect';
-import {
-  useSignUpAction,
-  useSignUpEmail,
-} from '~/routes/users/sign-up/profile';
+import { googleAuth, signIn } from '~/server/auth/auth.effect';
+import { useSignUpEmail } from '~/routes/users/sign-up/profile';
 import { InputCheckbox } from '../../molecules/input-checkbox';
 import { useCompanySize } from '~/server/loader/use-company-size.loader';
 import { useUserInfoRole } from '~/server/loader/use-user-info-role.loader';
@@ -26,6 +29,42 @@ import { InputRadioOthers } from '../../molecules/input-radio-others';
 import { userInfoRoleMain } from '~/infra/main/services/user-info-role/user-info-role-main.effect';
 import { ToastListContext } from '~/contexts/toast-list';
 import { userInfoGoalMain } from '~/infra/main/services/user-info-goal/user-info-goal-main.effect';
+import { trimTailSlash } from '~/libs/url/rule';
+import { UserInfoProto } from '@shared/domains/user-info/user-info.type';
+import { userMain } from '~/infra/main/services/user/user-main.effect';
+import { serverErrorToast } from '~/libs/error/error';
+import { googleOAuthMain } from '~/infra/main/services/google/oauth-main.effect';
+
+const signUpWithPw = server$(async function (
+  data: { email: string; pw: string; signUpCodeId: string } & Omit<
+    UserInfoProto,
+    'userId'
+  >
+) {
+  try {
+    const response = await userMain.signUp(data);
+    if (response.body.code === 201000) {
+      return { success: true };
+    }
+    return { success: false };
+  } catch (err) {
+    return { success: false };
+  }
+});
+
+const signUpWithGoogle = server$(async function (
+  data: { email: string; idToken: string } & Omit<UserInfoProto, 'userId'>
+) {
+  try {
+    const response = await googleOAuthMain.signUp(data);
+    if (response.body.code === 201000) {
+      return { success: true };
+    }
+    return { success: false };
+  } catch (err) {
+    return { success: false };
+  }
+});
 
 const createUserInfoRole = server$(async function (description: string) {
   try {
@@ -62,12 +101,16 @@ export const UserSignUpProfileForm = component$<UserSignUpFormProps>(
     const toastList = useContext(ToastListContext);
     const t = inlineTranslate();
     const emailInCode = useSignUpEmail();
-    const action = useSignUpAction();
+    const loc = useLocation();
     const companySizeLoaded = useCompanySize();
     const userInfoRoleLoaded = useUserInfoRole();
     const userInfoGoalLoaded = useUserInfoGoal();
 
     const email = useInputText(emailInCode.value.data || '');
+    const showPw = useComputed$(() => {
+      const code = loc.url.searchParams.get('code');
+      return typeof code === 'string';
+    });
     const pw = useInputText('');
     const pwConfirm = useInputText('');
     const companyName = useInputText('');
@@ -88,6 +131,7 @@ export const UserSignUpProfileForm = component$<UserSignUpFormProps>(
       onSubmit$: onSubmitStatus$,
       onSubmitCompleted$: onStatusSubmitCompleted$,
     } = useSubmitStatus(
+      showPw,
       pwInfo,
       companyName,
       companyUrl,
@@ -96,11 +140,17 @@ export const UserSignUpProfileForm = component$<UserSignUpFormProps>(
       userInfoGoal
     );
 
-    const onSubmit$ = $(async () => {
+    const onClickSubmit$ = $(async () => {
       // 여기는 무조건 있지만
+
       const companySizeId = companySizeLoaded.value.find(
         (c) => c.tag === companySize.value
       )?.id;
+
+      if (!companySizeId) {
+        toastList.addToast$({ tag: 'dynamic.error.server', type: 'error' });
+        return;
+      }
 
       // 아래 두개는 없을 수 있음. 그러면 others인거고 추가로 생성해줘야함
       let roleId = userInfoRoleLoaded.value.find(
@@ -110,10 +160,7 @@ export const UserSignUpProfileForm = component$<UserSignUpFormProps>(
         const description = userInfoRoleOther.value;
         const userInfoRoleCreated = await createUserInfoRole(description);
         if (userInfoRoleCreated === undefined) {
-          toastList.addToast$({
-            type: 'error',
-            tag: 'dynamic.error.server',
-          });
+          toastList.addToast$(serverErrorToast);
 
           return;
         }
@@ -128,10 +175,7 @@ export const UserSignUpProfileForm = component$<UserSignUpFormProps>(
         const description = userInfoRoleOther.value;
         const userInfoGoalCreated = await createUserInfoGoal(description);
         if (userInfoGoalCreated === undefined) {
-          toastList.addToast$({
-            type: 'error',
-            tag: 'dynamic.error.server',
-          });
+          toastList.addToast$(serverErrorToast);
 
           return;
         }
@@ -141,27 +185,71 @@ export const UserSignUpProfileForm = component$<UserSignUpFormProps>(
 
       await onSubmitStatus$();
 
-      await action.submit({
-        email: email.value,
-        pw: pw.value,
-        marketingApproval: marketingApproval.value,
-        companyName: companyName.value,
-        companyUrl: companyUrl.value,
-        companySizeId,
-        roleId,
-        goalId,
-      });
+      const emailLow = email.value.toLowerCase();
 
-      await onStatusSubmitCompleted$();
-      await signIn({ email: email.value, pw: pw.value });
+      const signUpCodeId = (() => {
+        const query = loc.url.searchParams.get('code');
+        if (query === null) return undefined;
+        return trimTailSlash(query);
+      })();
+      if (signUpCodeId) {
+        const { success } = await signUpWithPw({
+          email: emailLow,
+          pw: pw.value,
+          marketingApproval: marketingApproval.value,
+          companyName: companyName.value,
+          companyUrl: companyUrl.value,
+          companySizeId,
+          roleId,
+          goalId,
+          signUpCodeId,
+        });
 
-      window.location.href = '/console?msg=welcome';
+        if (success) {
+          await signIn({ email: emailLow, pw: pw.value });
+          window.location.href = '/console?msg=welcome';
+          return;
+        }
+        toastList.addToast$(serverErrorToast);
+        return;
+      }
+
+      const idToken = (() => {
+        const query = loc.url.searchParams.get('googleIdToken');
+        if (query === null) return undefined;
+        return trimTailSlash(query);
+      })();
+      if (idToken) {
+        const { success } = await signUpWithGoogle({
+          email: emailLow,
+          marketingApproval: marketingApproval.value,
+          companyName: companyName.value,
+          companyUrl: companyUrl.value,
+          companySizeId,
+          roleId,
+          goalId,
+          idToken,
+        });
+
+        if (success) {
+          const { message } = await googleAuth(idToken);
+          if (message === 'sign-in') {
+            window.location.href = '/console?msg=welcome';
+            return;
+          }
+        }
+        toastList.addToast$(serverErrorToast);
+        return;
+      }
+
+      toastList.addToast$(serverErrorToast);
+      onStatusSubmitCompleted$();
     });
 
     return (
       <div class={cx(s.wrapper, props.class)}>
         <h1 class={s.title}>{t('usersSignUpProfile.form.title')}</h1>
-        <Form class={cx(props.class)} onSubmit$={onSubmit$}>
+        <Form class={cx(props.class)}>
           <InputTextVerbose
             label="email"
             name="email"
@@ -172,14 +260,17 @@ export const UserSignUpProfileForm = component$<UserSignUpFormProps>(
             bindValue={email}
             disabled
           />
-          <InputPassword
-            label="password"
-            pw={pw}
-            pwConfirm={pwConfirm}
-            infoMatch={pwInfo.value}
-            infoLength={pwLengthInfo.value}
-            infoValid={pwValidInfo.value}
-          />
+          {showPw.value && (
+            <InputPassword
+              label="password"
+              pw={pw}
+              pwConfirm={pwConfirm}
+              infoMatch={pwInfo.value}
+              infoLength={pwLengthInfo.value}
+              infoValid={pwValidInfo.value}
+            />
+          )}
+
           <div class={s.info}>
             <InputTextVerbose
               label="company name"
@@ -284,6 +375,8 @@ export const UserSignUpProfileForm = component$<UserSignUpFormProps>(
             />
           </div>
           <Submit
+            type="button"
+            onClick$={onClickSubmit$}
             class={s.submit}
             status={submitStatus.value}
             label={t('usersSignUpProfile.form.submit')}

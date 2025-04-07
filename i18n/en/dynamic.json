@@ -2,7 +2,8 @@
   "dynamic": {
     "error": {
       "server": "Internal server error. Please try again later.",
-      "invalid": "invalid"
+      "invalid": "invalid",
+      "base": "unhandled error"
     },
     "info": {
       "provider": {
@@ -40,6 +41,9 @@
     "signUpCode": {
       "expired": "Your sign-up-code is expired.",
       "invalid": "Your sign-up-code is invalid."
+    },
+    "googleToken": {
+      "invalid": "Your google-token is invalid."
     },
     "userInfoRole": {
       "solo_creator": "solo creator",

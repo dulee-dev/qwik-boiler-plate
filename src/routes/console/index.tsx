@@ -29,7 +29,7 @@ export default component$(() => {
     if (msg === 'welcome')
       toastList.addToast$({
         type: 'ok',
-        tag: 'dynamic.signUp.success',
+        tag: 'dynamic.signUp.success@@Welcome!',
       });
   });
 

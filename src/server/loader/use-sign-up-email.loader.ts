@@ -29,7 +29,7 @@ export const useSignUpEmail = routeLoader$(async ({ query, redirect }) => {
     if (response.body.code === 201000) {
       return { ok: true, data: response.body.data.payload.email };  
     }
-    throw redirect(302, '/users/sign-in/?msg=invalid');    
+    throw redirect(302, '/users/sign-in/?msg=google-token-invalid');    
   }
 
   throw redirect(302, '/users/sign-in/?msg=invalid');

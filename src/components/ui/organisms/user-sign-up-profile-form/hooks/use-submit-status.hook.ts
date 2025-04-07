@@ -3,6 +3,7 @@ import { SubmitStatus } from '~/components/ui/atoms/submit';
 import { InputInfoType } from '~/libs/html/type';
 
 export const useSubmitStatus = (
+  showPw: Signal<boolean>,
   pwInfo: Signal<InputInfoType | undefined>,
   companyName: Signal<string>,
   companyUrl: Signal<string>,
@@ -13,6 +14,7 @@ export const useSubmitStatus = (
   const submitStatus = useSignal<SubmitStatus>('idle');
 
   useTask$(({ track }) => {
+    const _showPw = track(() => showPw.value);
     const _pwInfo = track(() => pwInfo.value);
     const _companyName = track(() => companyName.value);
     const _companyUrl = track(() => companyUrl.value);
@@ -20,8 +22,9 @@ export const useSubmitStatus = (
     const _userInfoRole = track(() => userInfoRole.value);
     const _userInfoGoal = track(() => userInfoGoal.value);
 
+    const pwOk = _showPw ? _pwInfo?.type === 'ok' : true;
     const isOk =
-      _pwInfo?.type === 'ok' &&
+      pwOk &&
       _companyName.length > 0 &&
       _companyName.length <= 128 &&
       _companyUrl.length > 0 &&
